@@ -1,0 +1,9 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 9205,
+  "expoServerNgrokUrl": "https://um-2be.anonymous.temporal.exp.direct",
+  "packagerNgrokUrl": "https://packager.um-2be.anonymous.temporal.exp.direct",
+  "ngrokPid": 9235
+}
