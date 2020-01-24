@@ -35,11 +35,13 @@ const Styles = StyleSheet.create({
     height: 4,
     borderRadius: 6,
     backgroundColor: '#858585'
+  },
+  scrollContainer: {
+    width: '90%'
   }
 })
 
 export default class SlideOverPane extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -124,11 +126,10 @@ export default class SlideOverPane extends Component {
         {height: cardHeight}
       ],
       scrollContainer: [
+        Styles.scrollContainer,
         {transform: [{translateY: momentumPan}]},
       ],
-      scroll: [
-        Styles.card
-      ]
+      scroll: []
     }
   }
 
