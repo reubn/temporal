@@ -158,7 +158,7 @@ export default class SlideOverPane extends Component {
                 // if(this.state.scrollHasMomentum && y + layoutHeight > contentHeight) Animated.event([this.state.momentumPan])(y + layoutHeight - contentHeight) // Bottom Bounce
             }}
             scrollEventThrottle={1}
-
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={scrollStyle}>
               {this.props.children}
           </ScrollView>

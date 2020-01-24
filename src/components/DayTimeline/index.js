@@ -3,7 +3,7 @@ import {View, Text} from 'react-native'
 
 import Period from './Period'
 
-import {compareAsc, isEqual, differenceInHours} from 'date-fns'
+import {compareAsc, isEqual, differenceInHours, addHours, format} from 'date-fns'
 
 export default ({events}) => {
   const [data, setData] = useState(events)
@@ -23,17 +23,17 @@ export default ({events}) => {
   const hours = Math.ceil(differenceInHours(periods[periods.length - 1].end, periods[0].start))
 
   return (
-    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'row'}}>
-    <View style={{height: differenceInHours(periods[periods.length - 1].end, periods[0].start) * 100, width: '25%', backgroundColor: 'green'}}>
-      {Array.from({length: hours}, (_, i) => <View key={`scale-${i}`} style={{overflow: 'visible', height: 100, backgroundColor: '#'+Math.floor(Math.random()*16777215).toString(16)}}>
-        <Text style={{fontSize: 16, position: 'relative', top: -10}}>10:00</Text>
-        <View style={{height:2, width: 10, backgroundColor: 'black', position:'absolute', top: '25%'}}/>
-        <View style={{height:2, width: 20, backgroundColor: 'black', position:'absolute', top: '50%'}}/>
-        <View style={{height:2, width: 10, backgroundColor: 'black', position:'absolute', top: '75%'}}/>
-        {i == hours - 1 && <Text style={{fontSize: 16, position: 'relative', position:'absolute', top: '100%', transform:[{translateY: -10}]}}>10:00</Text>}
+    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'row', marginTop: 10, marginBottom: 10}}>
+    <View style={{height: differenceInHours(periods[periods.length - 1].end, periods[0].start) * 100, width: '20%', backgroundColor: 'green'}}>
+      {Array.from({length: hours}, (_, i) => <View key={`scale-${i}`} style={{overflow: 'visible', height: 100, backgroundColor: '#fff'/*'#'+Math.floor(Math.random()*16777215).toString(16)*/}}>
+        <Text style={{color:'hsl(0, 0%, 30%)', fontWeight: '500', fontSize: 16, position: 'relative', top: -10}}>{format(addHours(periods[0].start, i), 'h:mm')}</Text>
+        <View style={{height:2, width: 10, borderRadius: 2, backgroundColor: 'hsl(0, 0%, 90%)', position:'absolute', top: '25%'}}/>
+        <View style={{height:2, width: 20, borderRadius: 2, backgroundColor: 'hsl(0, 0%, 90%)', position:'absolute', top: '50%'}}/>
+        <View style={{height:2, width: 10, borderRadius: 2, backgroundColor: 'hsl(0, 0%, 90%)', position:'absolute', top: '75%'}}/>
+        {i == hours - 1 && <Text style={{color:'hsl(0, 0%, 30%)', fontWeight: '500', fontSize: 16, position: 'relative', position:'absolute', top: '100%', transform:[{translateY: -10}]}}>{format(addHours(periods[0].start, i + 1), 'h:mm')}</Text>}
       </View>)}
     </View>
-    <View style={{width: '75%'}}>{elements}</View>
+    <View style={{width: '80%'}}>{elements}</View>
     </View>
   )
 }

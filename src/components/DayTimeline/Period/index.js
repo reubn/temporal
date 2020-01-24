@@ -8,20 +8,19 @@ export default ({style: externalStyle, event: {start, end, category, title}}) =>
   // console.log({category, start, end, length})
   const style = [{
     // position: 'absolute',
-    top: 0,
-    left: 0,
-    height: (length * 100) - 7,
+    height: (length * 100) - 30,
     width: '100%',
     backgroundColor: '#'+Math.floor(Math.random()*16777215).toString(16),
     borderRadius: 12,
-    // marginBottom: 15,
+    marginTop: 5,
+    marginBottom: 5,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   }]
   return <View style={[externalStyle, style]}>
-    <Text>{title}</Text>
+    {/*<Text>{title}</Text>
     <Text>{category}</Text>
-    <Text>{title}</Text>
+    <Text>{title}</Text>*/}
   </View>
 }
