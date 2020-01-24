@@ -203,46 +203,49 @@ class Card extends Component {
     this.state.pan.removeAllListeners();
   }
 
-  getMainCardStyle() {
+  getStyles() {
     let {pan, momentumPan} = this.state;
-    // console.log('R', pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]}))
-    return [
-      Styles.cardContainer,
-      {position: 'absolute'},
-      {transform: [{translateY: Animated.subtract(pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [DIMENSIONS.height, 0]}), momentumPan)}]},
-      {height: pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]})}
-    ];
+
+    return {
+      main: [
+        Styles.cardContainer,
+        {position: 'absolute'},
+        {transform: [{translateY: Animated.subtract(pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [DIMENSIONS.height, 0]}), momentumPan)}]},
+        {height: pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]})}
+      ],
+      scroll: [
+        Styles.card
+      ]
+    };
   }
 
   render() {
     let {picture, name, email} = this.props;
+    const {main: mainStyle, scroll: scrollStyle} = this.getStyles()
     // console.log(this.panResponder.panHandlers)
     return (
-      <Animated.View style={this.getMainCardStyle()} {...this.panResponder.panHandlers}>
-      <TouchableOpacity onPressIn={() => this.setState({slideDontScroll: true})} onPressOut={() => this.setState({slideDontScroll: false})} style={Styles.handleContainer} >
-        <View style={Styles.handle} />
+      <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
+      <TouchableOpacity
+        onPressIn={() => this.setState({slideDontScroll: true})}
+        onPressOut={() => this.setState({slideDontScroll: false})}
+        style={Styles.handleContainer}>
+          <View style={Styles.handle} />
       </TouchableOpacity>
         <ScrollView
           {...this.scrollPanResponder.panHandlers}
           scrollEnabled={!this.state.listenForScrollTouchMove}
-          onMomentumScrollBegin={() => this.setState({mom: true})}
-          onMomentumScrollEnd={() => {
-            this.setState({mom: false})
-            Animated.spring(this.state.momentumPan, {
-              toValue: 0,
-              mass: 0.8
-            }).start()
-          }}
-          onScroll={({nativeEvent: {contentOffset: {y}}}) => {
-              if(y < 0 && this.state.scrollBeingTouched && !this.state.slideDontScroll) this.setState({slideDontScroll: true, listenForScrollTouchMove: true})
-              if(this.state.mom && y < 0) {
-                const yValue = y
-                Animated.event([this.state.momentumPan], {listener: (event, gestureState) => console.log(this.state.offset, this.state.momentumPan)})(yValue)
-              }
+
+          onMomentumScrollBegin={() => this.setState({scrollHasMomentum: true})}
+          onMomentumScrollEnd={() => this.setState({scrollHasMomentum: false})}
+
+          onScroll={({nativeEvent: {contentOffset: {y}, contentSize: {height: contentHeight}, layoutMeasurement: {height: layoutHeight}}}) => {
+              if((y < 0) && this.state.scrollBeingTouched && !this.state.slideDontScroll) return this.setState({slideDontScroll: true, listenForScrollTouchMove: true}) // Manual Scroll
+              if(this.state.scrollHasMomentum && y < 0) return Animated.event([this.state.momentumPan])(y) // Top Bounce
+              // if(this.state.scrollHasMomentum && y + layoutHeight > contentHeight) Animated.event([this.state.momentumPan])(y + layoutHeight - contentHeight) // Bottom Bounce
           }}
           scrollEventThrottle={1}
 
-          contentContainerStyle={Styles.card}>
+          contentContainerStyle={scrollStyle}>
             <Text style={Styles.text}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
