@@ -123,6 +123,7 @@ class Card extends Component {
     super(props);
     this.state = {
       pan: new Animated.Value(0),
+      momentumPan: new Animated.Value(0),
       offset: 0,
       slideDontScroll: false,
       scrollBeingTouched: false,
@@ -183,8 +184,8 @@ class Card extends Component {
         if(!this.state.listenForScrollTouchMove || !this.state.slideDontScroll) return
         // if(dy < 0) return
 
-          const yValue = this.state.offset - dy
-          Animated.event([this.state.pan], /*{listener: (event, gestureState) => console.log(this.state.offset, this.state.pan)}*/)(yValue)
+        const yValue = this.state.offset - dy
+        Animated.event([this.state.pan], /*{listener: (event, gestureState) => console.log(this.state.offset, this.state.pan)}*/)(yValue)
 
       },
       onPanResponderRelease: () => {
@@ -203,12 +204,12 @@ class Card extends Component {
   }
 
   getMainCardStyle() {
-    let {pan} = this.state;
+    let {pan, momentumPan} = this.state;
     // console.log('R', pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]}))
     return [
       Styles.cardContainer,
       {position: 'absolute'},
-      {transform: [{translateY: pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [DIMENSIONS.height, 0]})}]},
+      {transform: [{translateY: Animated.subtract(pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [DIMENSIONS.height, 0]}), momentumPan)}]},
       {height: pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]})}
     ];
   }
@@ -224,7 +225,21 @@ class Card extends Component {
         <ScrollView
           {...this.scrollPanResponder.panHandlers}
           scrollEnabled={!this.state.listenForScrollTouchMove}
-          onScroll={({nativeEvent: {contentOffset: {y}}}) => (y < 0 && this.state.scrollBeingTouched && !this.state.slideDontScroll) && this.setState({slideDontScroll: true, listenForScrollTouchMove: true})}
+          onMomentumScrollBegin={() => this.setState({mom: true})}
+          onMomentumScrollEnd={() => {
+            this.setState({mom: false})
+            Animated.spring(this.state.momentumPan, {
+              toValue: 0,
+              mass: 0.8
+            }).start()
+          }}
+          onScroll={({nativeEvent: {contentOffset: {y}}}) => {
+              if(y < 0 && this.state.scrollBeingTouched && !this.state.slideDontScroll) this.setState({slideDontScroll: true, listenForScrollTouchMove: true})
+              if(this.state.mom && y < 0) {
+                const yValue = y
+                Animated.event([this.state.momentumPan], {listener: (event, gestureState) => console.log(this.state.offset, this.state.momentumPan)})(yValue)
+              }
+          }}
           scrollEventThrottle={1}
 
           contentContainerStyle={Styles.card}>
