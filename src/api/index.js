@@ -1,65 +1,70 @@
-import {parse} from 'date-fns'
+import {differenceInDays, differenceInMinutes, addDays, isEqual, startOfDay} from 'date-fns'
 
-import RCTNetworking from 'react-native/Libraries/Network/RCTNetworking'
+import queryServer from './getData'
 
-import {eventCategories, defaultCategory} from '../config'
-import {username, password} from './secrets'
-import mockResponse from './mockResponse'
+class API {
+  constructor(){
+    this.store = []
+  }
 
-export const login = async () => {
-  RCTNetworking.clearCookies(() => {})
+  incorporateServerResponse(queryResponse){
+    return queryResponse.map(entry => {
+      const [preexistingEntry, preexistingIndex] = this.getDateFromStore({date: entry.date})
+      if(!preexistingEntry) return this.store.push(entry)
 
-  const formData = new URLSearchParams()
-  formData.append('username', username)
-  formData.append('password', password)
-  formData.append('action', 'login')
-  formData.append('submit', 'Continue')
+      this.store[preexistingIndex] = entry
 
-  await fetch("https://timetables.liv.ac.uk/Home/Login", {
-    "method": "POST",
-    "headers": {
-      "Connection": "keep-alive",
-      "Origin": "https://timetables.liv.ac.uk",
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent": "Mozilla/5.0 (Macintosh Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4033.2 Safari/537.36",
-      "Referer": "https://timetables.liv.ac.uk/Home/Login",
-      "dnt": "1"
-    },
-    "body": formData.toString()
-  })
+      return entry
+    })
+  }
 
-  return true
+  async query({date, start=date, end=start}){
+    const normalisedStart = startOfDay(start), normalisedEnd = startOfDay(end)
+
+    const {result} = this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd})
+
+    if(result) return result
+
+    const numberOfRequestsNeeded = Math.ceil(differenceInDays(end, start)) + 1 / 28)
+    const completedQueries = await Promise.all(Array.from({length: numberOfRequestsNeeded}, (_, i) => {
+        const startDate = addDays(normalisedStart, i * 28)
+
+        return queryServer({date: startDate})
+    }))
+
+    return completedQueries.flatMap(query => this.incorporateServerResponse(query))
+  }
+
+  storeFulfillQuery({start, end}) {
+    const daysBetweenIncludingEnd = differenceInDays(end, start)) + 1
+
+    const results = Array.from({length: daysBetweenIncludingEnd}, (_, i) => {
+      const date = addDays(start, i)
+
+      const [storeEntry] = this.getDateFromStore(({date}))
+      if(!storeEntry) return false
+
+      const entryValid = this.isStoreEntryValid({entry: storeEntry})
+
+      return entryValid ? storeEntry : false
+    })
+
+    const storeHasValidEntriesForAllDays = results.every(r => r)
+
+    return {
+      success: storeHasValidEntriesForAllDays,
+      result: storeHasValidEntriesForAllDays ? results : undefined
+    }
+  }
+
+  getDateFromStore({date}){
+    const search = this.store.findIndex(({date: d}) => isEqual(date, d))
+
+    return [index > -1 ? this.store[index] : undefined, search]
+  }
+
+  isStoreEntryValid({entry: {timestamp}}){
+    return differenceInMinutes(new Date(), timestamp) <= 5
+  }
 
 }
-
-export const test = () => {
-const details = mockResponse/*(await fetch("https://timetables.liv.ac.uk/Home/Next28Days", {
-  "method": "GET",
-  "headers": {
-    "User-Agent": "Mozilla/5.0 (Macintosh Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4033.2 Safari/537.36",
-    "Referer": "https://timetables.liv.ac.uk/Home/Today",
-    "dnt": "1"
-  }
-})).text()*/
-const entries = Array.from(details.matchAll(/<a[^]*?Details\?event=(?<id>.+)\"[^]*?h2>(?<code>.+)<\/h2[^]*?p>\n(?<dateString>.+?)\n(?<time>.+?)\n/g), ({groups: {dateString, id, code, time}}) => {
-  const date = parse(dateString.trim().replace(/<.+?>/g, ''), 'EEEE, dd LLLL yyyy', new Date())
-  const [start, end] = time.trim().split(' - ').map(string => parse(string, 'HH:mm', date))
-
-  const {category, title} = eventCategories.reduce((bestMatch, category) => code.includes(category.searchString) ? category : bestMatch, defaultCategory)
-
-  return {
-    date,
-    start,
-    end,
-    id,
-    category,
-    title,
-    code
-  }
-})
-
-console.log(entries)
-
-return entries
-}
-// loginTest()

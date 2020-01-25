@@ -17,11 +17,26 @@ const Styles = StyleSheet.create({
   },
   eventsContainer: {
     width: '80%'
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    height: '100%'
+  },
+  emptyText: {
+    marginTop: 16,
+    fontFamily: 'SF-Pro-Rounded-Regular',
+    fontSize: 18,
+    color: 'hsl(0, 0%, 60%)'
   }
 })
 
 export default ({events}) => {
   const [data, setData] = useState(events)
+
+  console.log(events)
 
   const periods = events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
@@ -35,10 +50,19 @@ export default ({events}) => {
 
   const elements = periods.map((event, i, array) => <Period key={event.id || `free-${i}`} event={event}  />)
 
+  const timeline = <>
+    <Scale first={periods[0]} last={periods[periods.length - 1]} />
+    <View style={Styles.eventsContainer}>{elements}</View>
+  </>
+
   return (
     <View style={Styles.outerContainer}>
-      <Scale first={periods[0]} last={periods[periods.length - 1]} />
-      <View style={Styles.eventsContainer}>{elements}</View>
+      {events.length
+        ? timeline
+        : <View style={Styles.emptyContainer}>
+            <Text style={Styles.emptyText}>No Events Scheduled</Text>
+          </View>
+      }
     </View>
   )
 }

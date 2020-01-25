@@ -15,6 +15,7 @@ const Styles = StyleSheet.create({
   hourLabel: {
     color:'hsl(0, 0%, 30%)',
     fontWeight: '500',
+    fontFamily: 'SF-Pro-Rounded-Medium',
     fontSize: 16,
     position: 'relative',
     top: -10
@@ -44,10 +45,6 @@ const Styles = StyleSheet.create({
     top: '75%'
   },
   extraLastHourLabel: {
-    color:'hsl(0, 0%, 30%)',
-    fontWeight: '500',
-    fontSize: 16,
-    position: 'relative',
     position:'absolute',
     top: '100%',
     transform:[{translateY: -10}]
@@ -66,12 +63,13 @@ const createHourPeriod = ({first, hours}) => (_, i) => {
       <View style={Styles.hourQuarterMark}/>
       <View style={Styles.hourHalfMark}/>
       <View style={Styles.hourThreeQuarterMark}/>
-      {areWeLastHour && <Text style={Styles.extraLastHourLabel}>{extraLastHourLabel}</Text>}
+      {areWeLastHour && <Text style={[Styles.hourLabel, Styles.extraLastHourLabel]}>{extraLastHourLabel}</Text>}
     </View>
   )
 }
 
 export default ({first, last}) => {
+  console.log(last)
   const hoursDifference = differenceInHours(last.end, first.start)
   const hours = Math.ceil(hoursDifference)
   const containerHeight = hours * hourFactor

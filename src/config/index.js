@@ -1,74 +1,76 @@
+export * from './secrets'
+
 export const eventCategories = [
   {
     searchString: 'Lecture',
     category: 'lecture',
     title: 'Lecture',
-    colour: 'hsl(208, 100%, 65%)'
+    colour: 'hsla(191, 100%, 54%, 1)'
   },
   {
     searchString: 'Lecture (Review)',
-    category: 'lecture',
+    category: 'lecture-review',
     title: 'End of Block Review',
-    colour: '#000'
+    colour: 'hsla(191, 100%, 54%, 1)'
   },
   {
     searchString: 'Critical Analysis',
     category: 'cas',
     title: 'Critical Analysis & Synthesis',
-    colour: '#000'
+    colour: 'hsla(240, 67%, 60%, 1)'
   },
   {
     searchString: 'CCP',
     category: 'ccp',
-    title: 'Communication for Cli§nical Practice',
-    colour: '#000'
+    title: 'Communication for Clinical Practice',
+    colour: 'hsla(165, 80%, 64%, 1)'
   },
   {
     searchString: 'PSM',
     category: 'psm',
     title: 'Psychology & Sociology',
-    colour: '#000'
+    colour: 'hsla(42, 100%, 60%, 1)'
   },
   {
     searchString: 'HARC',
     category: 'harc',
     title: 'Human Anatomy Resource Centre',
-    colour: '#000'
+    colour: 'hsla(0, 100%, 66%, 1)'
   },
   {
     searchString: 'CBL(small)',
-    category: 'cbl',
+    category: 'cbl-s',
     title: 'Small CBL',
-    colour: 'hsl(344, 97%, 54%)'
+    colour: 'hsla(345, 100%, 63%, 1)'
   },
   {
     searchString: 'CBL(L)',
-    category: 'cbl',
+    category: 'cbl-b',
     title: 'Big CBL',
-    colour: 'hsl(344, 97%, 54%)'
+    colour: 'hsla(345, 100%, 63%, 1)'
   },
   {
     searchString: 'CSTLC',
     category: 'cs',
     title: 'Clinical Skills',
-    colour: '#000'
+    colour: 'hsla(50, 100%, 60%, 1)'
   },
   {
     searchString: 'EoB',
     category: 'eob',
     title: 'End of Block Test',
-    colour: '#000'
+    colour: 'hsla(0, 0%, 0%, 1)'
   },
   {
     searchString: 'Prof Plenary',
     category: 'pel',
     title: 'Profesionalism & Ethics',
-    colour: '#000'
+    colour: 'hsla(281, 93%, 64%, 1)'
   }
 ]
 
 export const defaultCategory = {
   category: 'other',
   title: 'Other',
-  colour: '#000'
+  colour: 'hsla(0, 0%, 0%, 1)'
 }
