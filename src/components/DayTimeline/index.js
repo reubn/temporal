@@ -34,10 +34,7 @@ const Styles = StyleSheet.create({
 })
 
 export default ({events}) => {
-  const [data, setData] = useState(events)
-
-  console.log(events)
-
+  console.log('events', events)
   const periods = events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
 

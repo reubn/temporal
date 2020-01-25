@@ -1,10 +1,31 @@
+import {AsyncStorage} from 'react-native'
+
 import {differenceInDays, differenceInMinutes, addDays, isEqual, startOfDay} from 'date-fns'
 
-import queryServer from './getData'
+import queryServer from './queryServer'
+
+const hydrateJSON = (key, value) => typeof value === "string" && /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/.test(value)
+                                    ? new Date(value)
+                                    : value
 
 export default class API {
   constructor(){
+    // await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.')
     this.store = []
+    this.initialised = false
+    this.init()
+  }
+
+  async init(){
+    if(this.initialised) return
+    const previousData = await AsyncStorage.getItem('temporalAPI')
+
+    if(previousData) this.store = JSON.parse(previousData, hydrateJSON)
+    this.initialised = true
+  }
+
+  async save() {
+    return AsyncStorage.setItem('temporalAPI', JSON.stringify(this.store))
   }
 
   incorporateServerResponse(queryResponse){
@@ -18,6 +39,8 @@ export default class API {
   }
 
   async query({date, start=date, end=start}){
+    await this.init()
+
     const normalisedStart = startOfDay(start), normalisedEnd = startOfDay(end)
 
     const {result} = this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd})
@@ -32,6 +55,8 @@ export default class API {
     }))
 
     completedQueries.forEach(query => this.incorporateServerResponse(query))
+
+    this.save()
 
     return this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd}).result
   }

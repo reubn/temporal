@@ -10,16 +10,14 @@ import API from './api'
 import SlideOverPane from './components/SlideOverPane'
 import DayTimeline from './components/DayTimeline'
 
-
-console.log(API)
 const api = new API();
-(async () => {
-  const first = await api.query({date: parseISO('2020-01-13')})
-  console.log(first)
-
-  const second = await api.query({date: parseISO('2020-01-14')})
-  console.log(second)
-})()
+// (async () => {
+//   const first = await api.query({date: parseISO('2020-01-13')})
+//   console.log(first)
+//
+//   const second = await api.query({date: parseISO('2020-01-14')})
+//   console.log(second)
+// })()
 
 const Styles = StyleSheet.create({
   container: {
@@ -30,14 +28,25 @@ const Styles = StyleSheet.create({
   }
 })
 
- const App = () => {
-  return (
+class App extends Component {
+  state = {
+    data: [],
+  }
+
+  async componentDidMount() {
+    const data = await api.query({date: parseISO('2020-01-13')})
+    console.log('CDM', JSON.stringify(data, null, 2))
+    this.setState({data})
+  }
+  render() {
+    return (
       <View style={Styles.container}>
         <SlideOverPane>
-          <DayTimeline events={[]} />
+          {this.state.data.length ? <DayTimeline events={this.state.data[0].events} /> : null}
       </SlideOverPane>
       </View>
     )
+  }
 }
 
 //testData.filter(({date}) => isEqual(date, parseISO('2020-01-13')))

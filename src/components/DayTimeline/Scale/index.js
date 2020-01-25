@@ -69,7 +69,6 @@ const createHourPeriod = ({first, hours}) => (_, i) => {
 }
 
 export default ({first, last}) => {
-  console.log(last)
   const hoursDifference = differenceInHours(last.end, first.start)
   const hours = Math.ceil(hoursDifference)
   const containerHeight = hours * hourFactor
