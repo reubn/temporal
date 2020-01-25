@@ -23,7 +23,7 @@ export default ({events}) => {
   const hours = Math.ceil(differenceInHours(periods[periods.length - 1].end, periods[0].start))
 
   return (
-    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'row', marginTop: 10, marginBottom: 10}}>
+    <View style={{flex: 1, alignItems: 'flex-start', justifyContent: 'flex-start', flexDirection: 'row', marginTop: 30, marginBottom: 10}}>
     <View style={{height: differenceInHours(periods[periods.length - 1].end, periods[0].start) * 100, width: '20%', backgroundColor: 'green'}}>
       {Array.from({length: hours}, (_, i) => <View key={`scale-${i}`} style={{overflow: 'visible', height: 100, backgroundColor: '#fff'/*'#'+Math.floor(Math.random()*16777215).toString(16)*/}}>
         <Text style={{color:'hsl(0, 0%, 30%)', fontWeight: '500', fontSize: 16, position: 'relative', top: -10}}>{format(addHours(periods[0].start, i), 'h:mm')}</Text>

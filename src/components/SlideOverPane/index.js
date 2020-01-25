@@ -21,20 +21,23 @@ const Styles = StyleSheet.create({
 
   },
   handleContainer: {
+    position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
     width: '100%',
     height: 30,
-    zIndex: 1,
-    backgroundColor: '#fff'
+    zIndex: 0,
+    backgroundColor: 'transparent'
   },
   handle: {
     display: 'flex',
     width: 50,
     height: 4,
     borderRadius: 6,
-    backgroundColor: '#858585'
+    backgroundColor: 'hsl(0, 0%, 40%)'
+    // borderWidth: 2,
+    // borderColor:'#fff'
   },
   scrollContainer: {
     width: '90%'
@@ -129,19 +132,24 @@ export default class SlideOverPane extends Component {
         Styles.scrollContainer,
         {transform: [{translateY: momentumPan}]},
       ],
-      scroll: []
+      scroll: [],
+      handleContainer: [
+        Styles.handleContainer,
+        (this.state.scrollBeingTouched || this.state.scrollHasMomentum) ? {opacity: 0} : {opacity: 1, zIndex: 1}
+      ]
     }
   }
 
   render() {
-    const {main: mainStyle, scrollContainer: scrollContainerStyle, scroll: scrollStyle} = this.getStyles()
+    const {main: mainStyle, scrollContainer: scrollContainerStyle, scroll: scrollStyle, handleContainer: handleContainerStyle} = this.getStyles()
 
     return (
       <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
         <TouchableOpacity
+        style={handleContainerStyle}
           onPressIn={() => this.setState({slideDontScroll: true})}
           onPressOut={() => this.setState({slideDontScroll: false})}
-          style={Styles.handleContainer}>
+          >
             <View style={Styles.handle} />
         </TouchableOpacity>
         <Animated.View style={scrollContainerStyle}>
