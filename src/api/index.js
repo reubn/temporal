@@ -2,7 +2,7 @@ import {differenceInDays, differenceInMinutes, addDays, isEqual, startOfDay} fro
 
 import queryServer from './getData'
 
-class API {
+export default class API {
   constructor(){
     this.store = []
   }
@@ -10,9 +10,8 @@ class API {
   incorporateServerResponse(queryResponse){
     return queryResponse.map(entry => {
       const [preexistingEntry, preexistingIndex] = this.getDateFromStore({date: entry.date})
-      if(!preexistingEntry) return this.store.push(entry)
-
-      this.store[preexistingIndex] = entry
+      if(!preexistingEntry) this.store.push(entry)
+      else this.store[preexistingIndex] = entry
 
       return entry
     })
@@ -25,18 +24,20 @@ class API {
 
     if(result) return result
 
-    const numberOfRequestsNeeded = Math.ceil(differenceInDays(end, start)) + 1 / 28)
+    const numberOfRequestsNeeded = Math.ceil((differenceInDays(end, start) + 1) / 28)
     const completedQueries = await Promise.all(Array.from({length: numberOfRequestsNeeded}, (_, i) => {
         const startDate = addDays(normalisedStart, i * 28)
 
         return queryServer({date: startDate})
     }))
 
-    return completedQueries.flatMap(query => this.incorporateServerResponse(query))
+    completedQueries.forEach(query => this.incorporateServerResponse(query))
+
+    return this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd}).result
   }
 
   storeFulfillQuery({start, end}) {
-    const daysBetweenIncludingEnd = differenceInDays(end, start)) + 1
+    const daysBetweenIncludingEnd = differenceInDays(end, start) + 1
 
     const results = Array.from({length: daysBetweenIncludingEnd}, (_, i) => {
       const date = addDays(start, i)
@@ -60,11 +61,10 @@ class API {
   getDateFromStore({date}){
     const search = this.store.findIndex(({date: d}) => isEqual(date, d))
 
-    return [index > -1 ? this.store[index] : undefined, search]
+    return [search > -1 ? this.store[search] : undefined, search]
   }
 
   isStoreEntryValid({entry: {timestamp}}){
     return differenceInMinutes(new Date(), timestamp) <= 5
   }
-
 }
