@@ -135,7 +135,7 @@ export default class SlideOverPane extends Component {
       scroll: [],
       handleContainer: [
         Styles.handleContainer,
-        (this.state.scrollBeingTouched || this.state.scrollHasMomentum) ? {opacity: 0} : {opacity: 1, zIndex: 1}
+        (this.state.scrollBeingTouched || this.state.scrollHasMomentum) ? {display: 'none'} : {opacity: 1, zIndex: 1}
       ]
     }
   }

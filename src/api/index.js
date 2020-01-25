@@ -1,6 +1,8 @@
 import {parse} from 'date-fns'
 
 import RCTNetworking from 'react-native/Libraries/Network/RCTNetworking'
+
+import {eventCategories, defaultCategory} from '../config'
 import {username, password} from './secrets'
 import mockResponse from './mockResponse'
 
@@ -43,20 +45,7 @@ const entries = Array.from(details.matchAll(/<a[^]*?Details\?event=(?<id>.+)\"[^
   const date = parse(dateString.trim().replace(/<.+?>/g, ''), 'EEEE, dd LLLL yyyy', new Date())
   const [start, end] = time.trim().split(' - ').map(string => parse(string, 'HH:mm', date))
 
-  let categoryAndTitle = ['other', `Other - ${code.split('/').pop()}`]
-  if(code.includes('Lecture')) categoryAndTitle = ['lecture', 'Lecture']
-  if(code.includes('Lecture (Review)')) categoryAndTitle = ['lecture', 'End of Block Review']
-  if(code.includes('Critical Analysis')) categoryAndTitle = ['cas', 'Critical Analysis & Synthesis']
-  if(code.includes('CCP')) categoryAndTitle = ['ccp', 'Communication for Clinical Practice']
-  if(code.includes('PSM')) categoryAndTitle = ['psm', 'Psychology & Sociology']
-  if(code.includes('HARC')) categoryAndTitle = ['harc', 'Human Anatomy Resource Centre']
-  if(code.includes('CBL(small)')) categoryAndTitle = ['cbl', 'Small CBL']
-  if(code.includes('CBL(L)')) categoryAndTitle = ['cbl', 'Big CBL']
-  if(code.includes('CSTLC')) categoryAndTitle = ['cs', 'Clinical Skills']
-  if(code.includes('EoB')) categoryAndTitle = ['eob', 'End of Block Test']
-  if(code.includes('Prof Plenary')) categoryAndTitle = ['pel', 'Profesionalism & Ethics']
-
-  const [category, title] = categoryAndTitle
+  const {category, title} = eventCategories.reduce((bestMatch, category) => code.includes(category.searchString) ? category : bestMatch, defaultCategory)
 
   return {
     date,
