@@ -3,6 +3,7 @@ import {parse, format, isEqual} from 'date-fns'
 import {eventCategories, defaultCategory} from '../config'
 
 import login from './login'
+import Event from './Event'
 import mockResponse from './mockResponse'
 
 const makeRequest = async date => {
@@ -35,16 +36,14 @@ export default async ({date=new Date()}={}) => {
 
     const {category} = eventCategories.reduce((bestMatch, category) => code.includes(category.searchString) ? category : bestMatch, defaultCategory)
 
-    return {
-      elaborate: false,
+    return new Event({
       date,
       start,
       end,
       id,
       category,
-      title: '',//titles[Math.floor(Math.random() * (titles.length - 1))],
       code
-    }
+    })
   })
 
 

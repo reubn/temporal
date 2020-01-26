@@ -35,14 +35,14 @@ class App extends Component {
 
   async componentDidMount() {
     const data = await api.query({date: parseISO('2020-01-13')})
-    console.log('CDM', JSON.stringify(data, null, 2))
+    // console.log('CDM', JSON.stringify(data, null, 2))
     this.setState({data})
   }
   render() {
     return (
       <View style={Styles.container}>
         <SlideOverPane>
-          {this.state.data.length ? <DayTimeline events={this.state.data[0].events} /> : null}
+          <DayTimeline events={this.state.data.length ? this.state.data[0].events : []} />
       </SlideOverPane>
       </View>
     )

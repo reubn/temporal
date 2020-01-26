@@ -3,20 +3,24 @@ import {AsyncStorage} from 'react-native'
 import {differenceInDays, differenceInMinutes, addDays, isEqual, startOfDay} from 'date-fns'
 
 import queryServer from './queryServer'
+import Event from './Event'
 
-const hydrateJSON = (key, value) => typeof value === "string" && /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/.test(value)
-                                    ? new Date(value)
-                                    : value
+const isDateString = value => /^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/.test(value)
+const hydrateJSON = (key, value) => {
+  if(typeof value === 'string' && ['start', 'end', 'date', 'timestamp'].includes(key) && isDateString(value)) return new Date(value)
+  else if(typeof value === 'object' && value.event === 'event') return new Event(value)
+  else return value
+}
 
 export default class API {
   constructor(){
-    // await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.')
     this.store = []
     this.initialised = false
     this.init()
   }
 
   async init(){
+    // await AsyncStorage.clear()
     if(this.initialised) return
     const previousData = await AsyncStorage.getItem('temporalAPI')
 

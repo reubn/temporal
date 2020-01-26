@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 
 import Scale from './Scale'
 import Period from './Period'
+import FreePeriod from './FreePeriod'
 
 import {compareAsc, isEqual} from 'date-fns'
 
@@ -34,18 +35,18 @@ const Styles = StyleSheet.create({
 })
 
 export default ({events}) => {
-  console.log('events', events)
+  // console.log('events', events)
   const periods = events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
 
     const freeTime = array.length && !isEqual(array[array.length - 1].end, start)
-      ? {category: 'free', start: array[array.length - 1].end, end: start}
+      ? {free: 'free', start: array[array.length - 1].end, end: start}
       : undefined
 
     return [...array, ...(freeTime ? [freeTime, event] : [event])]
   }, [])
 
-  const elements = periods.map((event, i, array) => <Period key={event.id || `free-${i}`} event={event}  />)
+  const elements = periods.map((eventOrFree, i, array) => eventOrFree.free ? <FreePeriod key={`free-${i}`} free={eventOrFree}  /> : <Period key={eventOrFree.id} event={eventOrFree}  />)
 
   const timeline = <>
     <Scale first={periods[0]} last={periods[periods.length - 1]} />
