@@ -5,13 +5,13 @@ export const eventCategories = [
     searchString: 'Lecture',
     category: 'lecture',
     title: 'Lecture',
-    colour: 'hsla(191, 100%, 54%, 1)'
+    colour: 'hsla(199, 100%, 65%, 1)'
   },
   {
     searchString: 'Lecture (Review)',
     category: 'lecture-review',
     title: 'End of Block Review',
-    colour: 'hsla(191, 100%, 54%, 1)'
+    colour: 'hsla(199, 100%, 65%, 1)'
   },
   {
     searchString: 'Critical Analysis',
