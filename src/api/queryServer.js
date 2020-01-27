@@ -1,58 +1,55 @@
-import {parse, format, isEqual} from 'date-fns'
+import {parseISO, format, isEqual, startOfDay} from 'date-fns'
 
 import {eventCategories, defaultCategory} from '../config'
 
 import login from './login'
 import Event from './Event'
-import mockResponse from './mockResponse'
 
-const makeRequest = async date => {
+const makeRequest = async ({start, end}) => {
   console.log('fetching 28days')
-  return fetch(`https://timetables.liv.ac.uk/Home/Next28Days?date=${format(date, 'ddMMyyyy')}`, {
+
+  return fetch(`https://timetables.liverpool.ac.uk/services/get-events?start=${format(start, 'yyyy-MM-dd')}&end=${format(end, 'yyyy-MM-dd')}`, {
     "method": "GET",
     "headers": {
       "User-Agent": "Mozilla/5.0 (Macintosh Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4033.2 Safari/537.36",
-      "Referer": "https://timetables.liv.ac.uk/Home/Today",
+      "Referer": "https://timetables.liverpool.ac.uk/",
       "dnt": "1"
     },
 
   })
-  // {url: 'good', ok: true, text: () => mockResponse}
 }
 
-export default async ({date=new Date()}={}) => {
-  let response = await makeRequest(date)
+export default async ({start=new Date(), end=new Date()}={}) => {
+  let response = await makeRequest({start, end})
 
-  if(response.url.includes('Login') || !response.ok){
+  if(response.url.includes('account') || !response.ok){
     await login()
-    response = await makeRequest(date)
+    response = await makeRequest({start, end})
   }
 
-  const html = await response.text()
+  const rawEvents = await response.json()
 
-  const events = Array.from(html.matchAll(/\<a href="Details\?event=(?<id>.+?)\"[^]+?\<h2\>(?<code>.+?)\<\/h2\>[^]+?\<p\>(?<dateString>[^]+?)\<br\>(?<time>[^]+?)\<\/p\>/g), ({groups: {dateString, id, code, time}}) => {
-    const date = parse(dateString.trim().replace(/<.+?>/g, ''), 'EEEE, dd LLLL yyyy', new Date())
-    const [start, end] = time.trim().split(' - ').map(string => parse(string, 'HH:mm', date))
-
+  const events = rawEvents.map(({start, end, activitydesc: code, activityid: id, locationdesc}) => {
     const {category} = eventCategories.reduce((bestMatch, category) => code.includes(category.searchString) ? category : bestMatch, defaultCategory)
 
     return new Event({
-      date,
-      start,
-      end,
+      start: parseISO(start),
+      end: parseISO(end),
       id,
       category,
-      code
+      code,
+      location: locationdesc.replace(/\<.+?\>/g, '')
     })
   })
 
 
   const days = events.reduce((bins, event) => {
-    const search = bins.findIndex(({date: d}) => isEqual(event.date, d))
+    const date = startOfDay(event.start)
+    const search = bins.findIndex(({date: d}) => isEqual(date, d))
 
     if(search > -1) bins[search].events.push(event)
     else bins.push({
-      date: event.date,
+      date,
       timestamp: new Date(),
       events: [event]
     })

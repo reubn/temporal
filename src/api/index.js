@@ -51,15 +51,9 @@ export default class API {
 
     if(result) return result
 
-    const numberOfRequestsNeeded = Math.ceil((differenceInDays(end, start) + 1) / 28)
-    const completedQueries = await Promise.all(Array.from({length: numberOfRequestsNeeded}, (_, i) => {
-        const startDate = addDays(normalisedStart, i * 28)
+    const serverQuery = await queryServer({start, end})
 
-        return queryServer({date: startDate})
-    }))
-
-    completedQueries.forEach(query => this.incorporateServerResponse(query))
-
+    this.incorporateServerResponse(serverQuery)
     this.save()
 
     return this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd}).result

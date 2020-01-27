@@ -2,10 +2,9 @@ import roomQuery from './roomQuery'
 
 
 export default class Event {
-  constructor({date, start, end, id, category, title='', code, location}){
+  constructor({start, end, id, category, title='', code, location}){
     this.event = 'event'
 
-    this.date = date
     this.start = start
     this.end = end
     this.id = id
