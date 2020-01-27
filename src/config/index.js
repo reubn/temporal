@@ -57,9 +57,17 @@ export const eventCategories = [
   },
   {
     searchString: 'EoB',
-    category: 'eob',
+    category: 'test',
     title: 'End of Block Test',
-    colour: 'hsla(0, 0%, 0%, 1)'
+    border: true,
+    colour: 'hsla(140, 80%, 64%, 1)'
+  },
+  {
+    type: 'Examination',
+    category: 'exam',
+    title: 'Exam',
+    border: true,
+    colour: 'hsla(345, 100%, 63%, 1)'
   },
   {
     searchString: 'Prof Plenary',

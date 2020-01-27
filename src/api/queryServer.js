@@ -14,8 +14,7 @@ const makeRequest = async ({start, end}) => {
       "User-Agent": "Mozilla/5.0 (Macintosh Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4033.2 Safari/537.36",
       "Referer": "https://timetables.liverpool.ac.uk/",
       "dnt": "1"
-    },
-
+    }
   })
 }
 
@@ -29,8 +28,8 @@ export default async ({start=new Date(), end=new Date()}={}) => {
 
   const rawEvents = await response.json()
 
-  const events = rawEvents.map(({start, end, activitydesc: code, activityid: id, locationdesc}) => {
-    const {category} = eventCategories.reduce((bestMatch, category) => code.includes(category.searchString) ? category : bestMatch, defaultCategory)
+  const events = rawEvents.map(({start, end, activitydesc: code, activityid: id, activitytype:type, locationdesc}) => {
+    const {category} = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
     return new Event({
       start: parseISO(start),

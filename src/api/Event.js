@@ -1,6 +1,3 @@
-import roomQuery from './roomQuery'
-
-
 export default class Event {
   constructor({start, end, id, category, title='', code, location}){
     this.event = 'event'
@@ -13,17 +10,5 @@ export default class Event {
     this.code = code
 
     this.location = location
-  }
-
-  get isElaborate(){
-    return !!this.location
-  }
-
-  async elaborate(){
-    if(this.isElaborate) return this
-
-    this.location = await roomQuery(this)
-
-    return this
   }
 }

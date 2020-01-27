@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const data = await api.query({date: parseISO('2020-01-13')})
+    const data = await api.query({date: parseISO('2020-01-22')})
     // console.log('CDM', JSON.stringify(data, null, 2))
     this.setState({data})
   }
