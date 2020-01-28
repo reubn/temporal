@@ -33,13 +33,17 @@ export default class API {
   }
 
   incorporateServerResponse(queryResponse){
-    return queryResponse.map(entry => {
+    const result = queryResponse.map(entry => {
       const [preexistingEntry, preexistingIndex] = this.getDateFromStore({date: entry.date})
       if(!preexistingEntry) this.store.push(entry)
       else this.store[preexistingIndex] = entry
 
       return entry
     })
+
+    this.save()
+
+    return result
   }
 
   async query({date, start=date, end=start}){
@@ -54,7 +58,6 @@ export default class API {
     const serverQuery = await queryServer({start, end})
 
     this.incorporateServerResponse(serverQuery)
-    this.save()
 
     return this.storeFulfillQuery({start: normalisedStart, end: normalisedEnd}).result
   }

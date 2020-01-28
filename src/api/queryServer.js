@@ -28,7 +28,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
 
   const rawEvents = await response.json()
 
-  const events = rawEvents.map(({start, end, activitydesc: code, activityid: id, activitytype:type, locationdesc}) => {
+  const events = rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc=''}) => {
     const {category} = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
     return new Event({
