@@ -28,7 +28,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
 
   const rawEvents = await response.json()
 
-  const events = rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc=''}) => {
+  return rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc=''}) => {
     const {category} = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
     return new Event({
@@ -37,23 +37,8 @@ export default async ({start=new Date(), end=new Date()}={}) => {
       id,
       category,
       code,
-      location: locationdesc.replace(/\<.+?\>/g, '')
+      location: locationdesc.replace(/\<.+?\>/g, ''),
+      timestamp: new Date()
     })
   })
-
-
-  const days = events.reduce((bins, event) => {
-    const date = startOfDay(event.start)
-    const search = bins.findIndex(({date: d}) => isEqual(date, d))
-
-    if(search > -1) bins[search].events.push(event)
-    else bins.push({
-      date,
-      timestamp: new Date(),
-      events: [event]
-    })
-    return bins
-  }, [])
-
-  return days
 }
