@@ -1,14 +1,9 @@
 import React, {Component} from 'react'
 import {StyleSheet, View, Text} from 'react-native'
 
-import {isEqual, parseISO} from 'date-fns'
-
-import API from './api'
-
 import SlideOverPane from './components/SlideOverPane'
 import DayTimeline from './components/DayTimeline'
-
-const api = new API();
+import Calendar from './components/Calendar'
 
 const Styles = StyleSheet.create({
   container: {
@@ -24,17 +19,14 @@ export default class App extends Component {
     data: [],
   }
 
-  async componentDidMount() {
-    const data = await api.query({date: parseISO('2020-01-22')})
-    // console.log('CDM', JSON.stringify(data, null, 2))
-    this.setState({data})
-  }
+  async componentDidMount() {}
   render() {
     return (
       <View style={Styles.container}>
+        <Calendar />
         <SlideOverPane>
-          <DayTimeline events={this.state.data.length ? this.state.data[0].events : []} />
-      </SlideOverPane>
+          <DayTimeline />
+        </SlideOverPane>
       </View>
     )
   }

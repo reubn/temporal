@@ -3,5 +3,5 @@ import thunk from 'redux-thunk'
 import {logger} from 'redux-logger'
 
 export default compose(
-  applyMiddleware(thunk, logger)
+  applyMiddleware(thunk, /*logger*/)
 )

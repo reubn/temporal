@@ -1,5 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
+import {useSelector, useDispatch} from 'react-redux'
+
+import updateEvents from '../../store/actions/updateEvents'
 
 import Scale from './Scale'
 import Period from './Period'
@@ -34,8 +37,16 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default ({events}) => {
-  // console.log('events', events)
+export default () => {
+  const dispatch = useDispatch()
+
+  const [events, date] = useSelector(({events, selectedDate}) => [events.filter(({date}) => isEqual(selectedDate, date)), selectedDate])
+  // console.log(events.length, date)
+
+  useEffect(() => {
+    if(events.length === 0) updateEvents(dispatch, {date, events})
+  }, [events.length, date])
+
   const periods = events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
 

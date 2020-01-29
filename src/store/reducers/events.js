@@ -1,6 +1,6 @@
-import eventsInitial from '../initials/events'
+import initial from '../initials/events'
 
-export default (state=eventsInitial, action) => {
+export default (state=initial, action) => {
   if(action.type === 'CACHE_EVENTS'){
     const {events} = action
 
