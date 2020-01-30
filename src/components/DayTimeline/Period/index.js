@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 
-import {differenceInHours} from 'date-fns'
+import {differenceInHours, differenceInSeconds} from 'date-fns'
 import Color from 'color'
 
 import {eventCategories, defaultCategory} from '../../../config'
@@ -9,7 +9,7 @@ import {hourFactor} from '../hourFactor'
 
 const Styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '95%',
     marginTop: 5,
     marginBottom: 5,
     flexDirection: 'row'
@@ -56,7 +56,7 @@ export default ({style: externalStyle, event}) => {
   const height = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
   const {colour: colourString, border, title: categoryObjectTitle} = eventCategories.find(({category: cat}) => category === cat) || defaultCategory
 
-  const colour = new Color(colourString)
+  const colour = new Color(colourString).desaturate(differenceInSeconds(new Date(), end) > 0 ? 1 : 0)
 
   return (
     <View style={[externalStyle, Styles.container, {height}]}>

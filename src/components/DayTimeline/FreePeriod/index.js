@@ -8,7 +8,7 @@ import {hourFactor} from '../hourFactor'
 
 const Styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '95%',
     borderRadius: 12,
     marginTop: 5,
     marginBottom: 5
