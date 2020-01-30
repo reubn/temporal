@@ -18,7 +18,6 @@ const Styles = StyleSheet.create({
     borderTopLeftRadius: 39,
     borderTopRightRadius: 39,
     backgroundColor: '#FFF',
-
   },
   handleContainer: {
     position: 'absolute',
@@ -41,6 +40,16 @@ const Styles = StyleSheet.create({
   },
   scrollContainer: {
     width: '90%'
+  },
+  shadowContainer: {
+    width: '100%',
+    borderTopLeftRadius: 39,
+    borderTopRightRadius: 39,
+    shadowColor: "hsla(200, 100%, 20%, 0.25)",
+    shadowOffset: {
+    	width: 0,
+    	height: -2,
+    }
   }
 })
 
@@ -115,7 +124,7 @@ export default class SlideOverPane extends Component {
   }
 
   getStyles() {
-    const {pan, momentumPan} = this.state
+    const {pan, momentumPan, slideDontScroll} = this.state
 
     const cardHeight = pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]})
     const cardDistanceFromTop = cardHeight.interpolate({inputRange: [0, DIMENSIONS.height], outputRange: [DIMENSIONS.height, 0]})
@@ -125,7 +134,7 @@ export default class SlideOverPane extends Component {
       main: [
         Styles.container,
         {position: 'absolute'},
-        {transform: [{translateY: cardDistanceFromTopMomentumCompensated}]},
+        // {transform: [{translateY: cardDistanceFromTopMomentumCompensated}]},
         {height: cardHeight}
       ],
       scrollContainer: [
@@ -136,40 +145,59 @@ export default class SlideOverPane extends Component {
       handleContainer: [
         Styles.handleContainer,
         (this.state.scrollBeingTouched || this.state.scrollHasMomentum) ? {display: 'none'} : {opacity: 1, zIndex: 1}
+      ],
+      shadowContainer: [
+        Styles.shadowContainer,
+        {height: cardHeight},
+        {top: cardDistanceFromTopMomentumCompensated, position: 'absolute'},
+        slideDontScroll ? {
+          shadowOpacity: 1,
+          shadowRadius: 10,
+          elevation: 10,
+          transform: [
+            {perspective: 850},
+          ],
+        } : {
+          shadowOpacity: 1,
+          shadowRadius: 5,
+          elevation: 5
+        }
       ]
     }
   }
 
   render() {
-    const {main: mainStyle, scrollContainer: scrollContainerStyle, scroll: scrollStyle, handleContainer: handleContainerStyle} = this.getStyles()
+    const {main: mainStyle, scrollContainer: scrollContainerStyle, scroll: scrollStyle, handleContainer: handleContainerStyle, shadowContainer: shadowContainerStyle} = this.getStyles()
 
     return (
-      <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
-        <TouchableOpacity
-        style={handleContainerStyle}
-          onPressIn={() => this.setState({slideDontScroll: true})}
-          onPressOut={() => this.setState({slideDontScroll: false})}
-          >
-            <View style={Styles.handle} />
-        </TouchableOpacity>
-        <Animated.View style={scrollContainerStyle}>
-          <ScrollView
-            {...this.scrollPanResponder.panHandlers}
-            scrollEnabled={!this.state.listenForScrollTouchMove}
+      <Animated.View style={shadowContainerStyle}>
+        <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
+          <TouchableOpacity
+          style={handleContainerStyle}
+            onPressIn={() => this.setState({slideDontScroll: true})}
+            onPressOut={() => this.setState({slideDontScroll: false})}
+            >
+              <View style={Styles.handle} />
+          </TouchableOpacity>
+          <Animated.View style={scrollContainerStyle}>
+            <ScrollView
+              {...this.scrollPanResponder.panHandlers}
+              scrollEnabled={!this.state.listenForScrollTouchMove}
 
-            onMomentumScrollBegin={() => this.setState({scrollHasMomentum: true})}
-            onMomentumScrollEnd={() => this.setState({scrollHasMomentum: false})}
+              onMomentumScrollBegin={() => this.setState({scrollHasMomentum: true})}
+              onMomentumScrollEnd={() => this.setState({scrollHasMomentum: false})}
 
-            onScroll={({nativeEvent: {contentOffset: {y}, contentSize: {height: contentHeight}, layoutMeasurement: {height: layoutHeight}}}) => {
-                if((y < 0) && this.state.scrollBeingTouched && !this.state.slideDontScroll) return this.setState({slideDontScroll: true, listenForScrollTouchMove: true}) // Manual Scroll
-                if(this.state.scrollHasMomentum && y < 0) return Animated.event([this.state.momentumPan])(y) // Top Bounce
-                // if(this.state.scrollHasMomentum && y + layoutHeight > contentHeight) Animated.event([this.state.momentumPan])(y + layoutHeight - contentHeight) // Bottom Bounce
-            }}
-            scrollEventThrottle={1}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={scrollStyle}>
-              {this.props.children}
-          </ScrollView>
+              onScroll={({nativeEvent: {contentOffset: {y}, contentSize: {height: contentHeight}, layoutMeasurement: {height: layoutHeight}}}) => {
+                  if((y < 0) && this.state.scrollBeingTouched && !this.state.slideDontScroll) return this.setState({slideDontScroll: true, listenForScrollTouchMove: true}) // Manual Scroll
+                  if(this.state.scrollHasMomentum && y < 0) return Animated.event([this.state.momentumPan])(y) // Top Bounce
+                  // if(this.state.scrollHasMomentum && y + layoutHeight > contentHeight) Animated.event([this.state.momentumPan])(y + layoutHeight - contentHeight) // Bottom Bounce
+              }}
+              scrollEventThrottle={1}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={scrollStyle}>
+                {this.props.children}
+            </ScrollView>
+          </Animated.View>
         </Animated.View>
       </Animated.View>
     )
