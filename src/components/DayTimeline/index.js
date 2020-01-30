@@ -7,6 +7,7 @@ import updateEvents from '../../store/actions/updateEvents'
 import Scale from './Scale'
 import Period from './Period'
 import FreePeriod from './FreePeriod'
+import NowLine from './NowLine'
 
 import {compareAsc, isEqual} from 'date-fns'
 
@@ -61,6 +62,7 @@ export default () => {
 
   const timeline = <>
     <Scale first={periods[0]} last={periods[periods.length - 1]} />
+    <NowLine first={periods[0]} last={periods[periods.length - 1]} />
     <View style={Styles.eventsContainer}>{elements}</View>
   </>
 
