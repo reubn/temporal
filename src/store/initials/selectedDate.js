@@ -1,3 +1,3 @@
-import {parseISO} from 'date-fns'
+import {startOfDay} from 'date-fns'
 
-export default parseISO('2020-01-30')
+export default new startOfDay(new Date())
