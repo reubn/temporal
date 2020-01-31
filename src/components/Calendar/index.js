@@ -7,7 +7,7 @@ import {WebView} from 'react-native-webview'
 
 import {CalendarList} from 'react-native-calendars'
 
-import {format} from 'date-fns'
+import {format, startOfDay} from 'date-fns'
 
 import selectDate from '../../store/actions/selectDate'
 
@@ -61,7 +61,7 @@ export default () => {
         // // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
         // maxDate={'2012-05-30'}
         // Handler which gets executed on day press. Default = undefined
-        onDayPress={({timestamp}) => {selectDate(dispatch, {date: new Date(timestamp)})}}
+        onDayPress={({timestamp}) => {selectDate(dispatch, {date: startOfDay(new Date(timestamp))})}}
         // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
         firstDay={1}
         horizontal={true}
