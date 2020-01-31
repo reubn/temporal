@@ -11,7 +11,7 @@ export const eventCategories = [
     searchString: 'Lecture (Review)',
     category: 'lecture-review',
     title: 'End of Block Review',
-    colour: 'hsla(199, 100%, 65%, 1)'
+    colour: 'hsla(210, 100%, 65%, 1)'
   },
   {
     searchString: 'Critical Analysis',
@@ -41,19 +41,19 @@ export const eventCategories = [
     searchString: 'CBL(small)',
     category: 'cbl-s',
     title: 'Small CBL',
-    colour: 'hsla(345, 100%, 63%, 1)'
+    colour: 'hsla(320, 100%, 63%, 1)'
   },
   {
     searchString: 'CBL(L)',
     category: 'cbl-b',
     title: 'Big CBL',
-    colour: 'hsla(345, 100%, 63%, 1)'
+    colour: 'hsla(320, 100%, 63%, 1)'
   },
   {
     searchString: 'CSTLC',
     category: 'cs',
     title: 'Clinical Skills',
-    colour: 'hsla(50, 100%, 60%, 1)'
+    colour: 'hsla(55, 100%, 60%, 1)'
   },
   {
     searchString: 'EoB',
