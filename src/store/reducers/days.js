@@ -1,6 +1,7 @@
 import {isEqual, differenceInSeconds} from 'date-fns'
 
 import initial from '../initials/days'
+import {rehydrateActionType} from '../persistence'
 
 export default (state=initial, action) => {
   if(action.type === 'CACHE_DAYS'){
@@ -22,6 +23,8 @@ export default (state=initial, action) => {
 
     return mutableState
   }
+
+  if(action.type === rehydrateActionType) return action.data.days
 
   return state
 }

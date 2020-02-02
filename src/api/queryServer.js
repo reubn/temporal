@@ -3,7 +3,6 @@ import {parseISO, format, isEqual, startOfDay, eachDayOfInterval, min, max} from
 import {eventCategories, defaultCategory} from '../config'
 
 import login from './login'
-import Event from './Event'
 
 const makeRequest = async ({start, end}) => {
   console.log('fetching 28days', format(start, 'yyyy-MM-dd'), format(end, 'yyyy-MM-dd'))
@@ -31,14 +30,17 @@ export default async ({start=new Date(), end=new Date()}={}) => {
   const events = rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc=''}) => {
     const {category} = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
-    return new Event({
-      start: parseISO(start),
+    const startDate = parseISO(start)
+    
+    return {
+      day: startOfDay(startDate),
+      start: startDate,
       end: parseISO(end),
       id,
       category,
       code,
       location: locationdesc.replace(/\<.+?\>/g, '')
-    })
+    }
   })
 
   const daysReturned = events.map(({day}) => day)
