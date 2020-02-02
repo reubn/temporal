@@ -1,7 +1,7 @@
-import events from './events'
-import selectedDate from './selectedDate'
+import days from './days'
+import selectedDay from './selectedDay'
 
 export default {
-  events,
-  selectedDate
+  days,
+  selectedDay
 }

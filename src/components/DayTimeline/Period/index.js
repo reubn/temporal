@@ -52,11 +52,13 @@ export default ({style: externalStyle, event}) => {
 
   const {start, end, category, title, location} = state.event
 
+  const ended = differenceInSeconds(new Date(), end) > 0
+
   const length = differenceInHours(end, start)
   const height = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
   const {colour: colourString, border, title: categoryObjectTitle} = eventCategories.find(({category: cat}) => category === cat) || defaultCategory
 
-  const colour = new Color(colourString).desaturate(differenceInSeconds(new Date(), end) > 0 ? 1 : 0)
+  const colour = new Color(colourString)//.desaturate( ? 1 : 0)
 
   return (
     <View style={[externalStyle, Styles.container, {height}]}>
@@ -64,8 +66,8 @@ export default ({style: externalStyle, event}) => {
     <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>
 
       <View style={Styles.textContainer}>
-        <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour.darken(0.2)}]}>{title || categoryObjectTitle}</Text>
-        <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}]}>{location}</Text>
+        <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{title || categoryObjectTitle}</Text>
+        <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location}</Text>
       </View>
     </View>
     </View>

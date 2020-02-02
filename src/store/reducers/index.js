@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux'
 
-import events from './events'
-import selectedDate from './selectedDate'
+import days from './days'
+import selectedDay from './selectedDay'
 
 const reducers = {
-  events,
-  selectedDate
+  days,
+  selectedDay
 }
 
 export default combineReducers(reducers)

@@ -1,15 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {WebView} from 'react-native-webview'
 
-
 import {CalendarList} from 'react-native-calendars'
 
-import {format, startOfDay} from 'date-fns'
+import {format, startOfDay, isEqual} from 'date-fns'
 
-import selectDate from '../../store/actions/selectDate'
+import selectDay from '../../store/actions/selectDay'
 
 const DIMENSIONS = Dimensions.get('window')
 
@@ -23,7 +22,14 @@ const Styles = StyleSheet.create({
     height: '100%'
   },
   calendar: {
-    marginTop: 30
+    marginTop: 40
+  },
+  calendarHeader: {
+    fontSize: 20,
+    fontFamily: 'SF-Pro-Rounded-Medium',
+    color: '#ffffff',
+    margin: 15,
+    textAlign: 'center'
   },
   background: {
     position: 'absolute',
@@ -36,8 +42,21 @@ const Styles = StyleSheet.create({
 
 export default () => {
   const dispatch = useDispatch()
-  const [events, date] = useSelector(({events, selectedDate}) => [events, selectedDate])
-  // console.log('calendar', format(date, 'yyyy-MM-dd'))
+  const [days, day] = useSelector(({days, selectedDay}) => [days, selectedDay])
+
+  const dots = useMemo(() => days.reduce((object, {day: d, events: {length}}) => ({
+      ...object,
+      [format(d, 'yyyy-MM-dd')]: ({
+        dots: Array(length).fill(isEqual(d, startOfDay(new Date())) ? {color: 'hsla(200, 100%, 60%, 1)'} : {color: '#fff', selectedDotColor: 'hsla(200, 100%, 60%, 1)'})
+      })
+  }), {}), [days.cacheKey])
+
+  const marks = Object.keys(dots).reduce((result, key) => {
+    result[key] = {...dots[key], ...(key === format(day, 'yyyy-MM-dd') ? {dots: [], selected: true} : {selected: false})}
+    return result
+  }, {})
+
+  const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
 
   const html = `<html style="
     background: linear-gradient(180deg, hsla(200, 100%, 60%, 1), hsla(205, 100%, 55%, 1));
@@ -50,18 +69,22 @@ export default () => {
 
   return (
     <View style={[Styles.outerContainer]}>
+      <View style={[Styles.calendar]}>
+      <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
       <CalendarList
-        style={[Styles.calendar]}
+        style={[]}
         // Initially visible month. Default = Date()
-        current={date}
-        markedDates={{[format(date, 'yyyy-MM-dd')]: {selected: true}}}
+        current={day}
+        markedDates={marks}
+        markingType="multi-dot"
 
         // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         // minDate={'2012-05-10'}
         // // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
         // maxDate={'2012-05-30'}
         // Handler which gets executed on day press. Default = undefined
-        onDayPress={({timestamp}) => {selectDate(dispatch, {date: startOfDay(new Date(timestamp))})}}
+        onVisibleMonthsChange={({length, 0: {timestamp}}) => {if(length === 1) setCalendarMonth(format(startOfDay(new Date(timestamp)), 'LLLL yyyy'))}}
+        onDayPress={({timestamp}) => {selectDay(dispatch, {day: startOfDay(new Date(timestamp))})}}
         // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
         firstDay={1}
         horizontal={true}
@@ -71,19 +94,36 @@ export default () => {
 
         hideArrows={true}
         theme={{
-          'stylesheet.day.basic': {today: {borderRadius: 10, backgroundColor: '#fff'}},
+          'stylesheet.day.multiDot': {
+            base: {
+              height: 36,
+              width: 36,
+              alignItems: 'center'
+            },
+            today: {
+              borderRadius: 8,
+              backgroundColor: '#fff'
+            },
+            selected: {
+              backgroundColor: '#fff',
+              borderRadius: 36
+            },
+            dot: {
+              width: 4,
+              height: 4,
+              marginTop: 2,
+              marginLeft: 2,
+              borderRadius: 5
+            }
+          },
           'stylesheet.calendar.header': {
             monthText: {
-              fontSize: 20,
-              fontFamily: 'SF-Pro-Rounded-Medium',
-              color: '#ffffff',
-              margin: 20,
+              display: 'none'
             }
           },
           backgroundColor: 'transparent',
           calendarBackground: 'transparent',
           textSectionTitleColor: 'hsla(200, 10%, 100%, 0.9)',
-          selectedDayBackgroundColor: '#ffffff',
           selectedDayTextColor: 'hsla(200, 100%, 60%, 1)',
           dayTextColor: '#fff',
           textDisabledColor: 'hsla(200, 10%, 100%, 0.7)',
@@ -101,6 +141,7 @@ export default () => {
         }}
 
       />
+      </View>
       <WebView
               pointerEvents="none"
               source={{html}}

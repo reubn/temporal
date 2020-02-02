@@ -5,7 +5,7 @@ export default class Event {
     this.event = 'event'
 
 
-    this.date = startOfDay(start)
+    this.day = startOfDay(start)
     this.start = start
     this.end = end
     this.id = id
