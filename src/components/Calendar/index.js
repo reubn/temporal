@@ -127,7 +127,6 @@ export default () => {
           selectedDayTextColor: 'hsla(200, 100%, 60%, 1)',
           dayTextColor: '#fff',
           textDisabledColor: 'hsla(200, 10%, 100%, 0.7)',
-          dotColor: '#00adf5',
           selectedDotColor: '#ffffff',
           indicatorColor: '#ffffff',
           textDayFontFamily: 'SF-Pro-Rounded-Medium',
