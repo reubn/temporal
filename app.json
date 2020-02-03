@@ -3,15 +3,20 @@
   "displayName": "Temporal",
   "expo": {
     "name": "temporal",
-    "slug": "expo-template-bare",
+    "slug": "temporal",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "entryPoint": "./src",
+    "icon": "./assets/icon.png",
     "platforms": [
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "science.reuben.temporal",
+      "buildNumber": "0.1.0"
+    }
   }
 }
