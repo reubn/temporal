@@ -2,8 +2,6 @@ import React, {useState, useEffect, useMemo} from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
-import {WebView} from 'react-native-webview'
-
 import {CalendarList} from 'react-native-calendars'
 
 import {format, startOfDay, isEqual} from 'date-fns'
@@ -17,7 +15,6 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    backgroundColor: 'hsla(222, 7%, 26%, 1)',
     width: '100%',
     height: '100%'
   },
@@ -30,13 +27,6 @@ const Styles = StyleSheet.create({
     color: '#ffffff',
     margin: 15,
     textAlign: 'center'
-  },
-  background: {
-    position: 'absolute',
-    zIndex: -1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'hsla(222, 7%, 26%, 1)'
   }
 })
 
@@ -57,15 +47,6 @@ export default () => {
   }, {})
 
   const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
-
-  const html = `<html style="
-    background: linear-gradient(180deg, hsla(200, 100%, 60%, 1), hsla(205, 100%, 55%, 1));
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-  ">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-  </html>`
 
   return (
     <View style={[Styles.outerContainer]}>
@@ -141,12 +122,6 @@ export default () => {
 
       />
       </View>
-      <WebView
-              pointerEvents="none"
-              source={{html}}
-              containerStyle={Styles.background}
-              scrollEnabled={false}
-            />
     </View>
   )
 }

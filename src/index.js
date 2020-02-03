@@ -4,8 +4,13 @@ import {Provider} from 'react-redux'
 import {registerRootComponent} from 'expo'
 import * as Font from 'expo-font'
 
+import {SafeAreaProvider} from 'react-native-safe-area-context'
+
 import store from './store'
 import App from './App'
+
+import {haveCredentials, clearCredentials} from './store/secure'
+haveCredentials()
 
 class FontLoaderWrapper extends Component {
   state = {
@@ -22,9 +27,11 @@ class FontLoaderWrapper extends Component {
   }
   render() {
     return (
-      <Provider store={store}>
-        {this.state.ready ? <App /> : null}
-      </Provider>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          {this.state.ready ? <App /> : null}
+        </Provider>
+      </SafeAreaProvider>
     )
   }
 }

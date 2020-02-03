@@ -1,15 +1,17 @@
 import RCTNetworking from 'react-native/Libraries/Network/RCTNetworking'
-import {username, password} from '../config'
+import {getCredentials, clearCredentials} from '../store/secure'
 
-export default async () => {
+export default async credentials => {
   RCTNetworking.clearCookies(() => {})
+
+  const {username, password} = credentials || await getCredentials()
 
   const formData = new URLSearchParams()
   formData.append('Username', username)
   formData.append('Password', password)
 
   console.log('fetching login')
-  const {ok} = await fetch('https://timetables.liverpool.ac.uk/account', {
+  return await fetch('https://timetables.liverpool.ac.uk/account', {
     "method": "POST",
     "headers": {
       "Connection": "keep-alive",
@@ -21,6 +23,8 @@ export default async () => {
     },
     "body": formData.toString()
   })
+
+  if(!ok) clearCredentials()
 
   return ok
 }

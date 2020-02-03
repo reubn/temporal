@@ -1,5 +1,3 @@
-export * from './secrets'
-
 export const eventCategories = [
   {
     searchString: 'Lecture',
@@ -65,7 +63,7 @@ export const eventCategories = [
   {
     type: 'Examination',
     category: 'exam',
-    title: 'Exam',
+    title: '',
     border: true,
     colour: 'hsla(345, 100%, 63%, 1)'
   },
@@ -79,6 +77,6 @@ export const eventCategories = [
 
 export const defaultCategory = {
   category: 'other',
-  title: 'Other',
+  title: '',
   colour: 'hsla(0, 0%, 0%, 1)'
 }
