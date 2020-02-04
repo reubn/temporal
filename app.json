@@ -1,6 +1,4 @@
 {
-  "name": "temporal",
-  "displayName": "Temporal",
   "expo": {
     "name": "temporal",
     "slug": "temporal",
@@ -16,7 +14,29 @@
     ],
     "ios": {
       "bundleIdentifier": "science.reuben.temporal",
-      "buildNumber": "0.1.0"
-    }
-  }
+      "buildNumber": "0.1.0",
+      "publishBundlePath": "ios/temporal/Supporting/shell-app.bundle",
+      "publishManifestPath": "ios/temporal/Supporting/shell-app-manifest.json"
+    },
+    "android": {
+      "package": "science.reuben.temporal",
+      "versionCode": 1,
+      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
+      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
+    },
+    "isDetached": true,
+    "detach": {
+      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.14.3-sdk36.0.0-00f587c0-b8c9-4b6b-88f6-2ccd4f20dc9c.tar.gz",
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.14.2-sdk36.0.0-51bb3c16-c2a5-4797-b721-4091ed00e53a.tar.gz"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "updates": {
+      "enabled": false
+    },
+    "scheme": "exp9211bf3846ac4a89b25f2cf5848955ca"
+  },
+  "displayName": "Temporal",
+  "name": "temporal"
 }

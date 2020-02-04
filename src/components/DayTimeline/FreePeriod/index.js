@@ -1,5 +1,5 @@
-import React from 'react'
-import {View, StyleSheet} from 'react-native'
+import React, {useState} from 'react'
+import {View, StyleSheet, Animated} from 'react-native'
 import {WebView} from 'react-native-webview'
 
 import {differenceInHours} from 'date-fns'
@@ -30,7 +30,18 @@ const html = `<html style="
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
 </html>`
 
+const AnimatedWebView = Animated.createAnimatedComponent(WebView)
+
 export default ({style: externalStyle, free}) => {
+  const [opacity] = useState(new Animated.Value(0))
+
+  const show = () => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 500
+    }).start()
+  }
+
   const {start, end} = free
 
   const length = differenceInHours(end, start)
@@ -38,10 +49,12 @@ export default ({style: externalStyle, free}) => {
 
   return (
     <View style={[externalStyle, Styles.container, {height}]}>
-      <WebView
+      <AnimatedWebView
         pointerEvents="none"
         source={{html}}
         containerStyle={Styles.stripes}
+        style={{opacity}}
+        onLoad={show}
         scrollEnabled={false}
       />
     </View>

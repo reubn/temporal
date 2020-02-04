@@ -65,6 +65,8 @@ export default () => {
   const insets = useSafeArea()
 
   const submit = async () => {
+    if(!username || !password) return
+
     const loginResult = await login({username, password})
 
     if(loginResult) setCredentials({username, password})

@@ -11,7 +11,7 @@ export default async credentials => {
   formData.append('Password', password)
 
   console.log('fetching login')
-  return await fetch('https://timetables.liverpool.ac.uk/account', {
+  const {url} = await fetch('https://timetables.liverpool.ac.uk/account', {
     "method": "POST",
     "headers": {
       "Connection": "keep-alive",
@@ -24,6 +24,9 @@ export default async credentials => {
     "body": formData.toString()
   })
 
+  console.log(url)
+  
+  const ok = url === 'https://timetables.liverpool.ac.uk/'
   if(!ok) clearCredentials()
 
   return ok

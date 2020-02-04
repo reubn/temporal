@@ -4,11 +4,11 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "jetify"
   },
-  "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
-    "@react-native-community/async-storage": "next",
+    "@react-native-community/async-storage": "^2.0.0-rc.1",
     "@react-native-community/async-storage-backend-legacy": "next",
     "color": "^3.1.2",
     "date-fns": "^2.9.0",
@@ -36,6 +36,7 @@
     "@babel/core": "~7.6.0",
     "babel-jest": "~24.9.0",
     "jest": "~24.9.0",
+    "jetifier": "~1.6.4",
     "metro-react-native-babel-preset": "~0.56.0",
     "react-test-renderer": "~16.9.0"
   },
