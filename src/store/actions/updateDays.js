@@ -8,9 +8,10 @@ export default async (dispatch, {day, start=day, end=start, timestamp=fromUnixTi
   console.log('last fetch difference', differenceInMinutes(now, timestamp), timestamp)
 
   if(!needToQueryServer) return
-  // console.log('needToQueryServer', needToQueryServer, timestamp, start, end)
 
+  dispatch({type: 'LOADING_START'})
   const days = await queryServer({start, end})
 
+  dispatch({type: 'LOADING_STOP'})
   dispatch({type: 'CACHE_DAYS', days})
 }

@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {ActivityIndicator, View, Text, StyleSheet} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
+
+import {compareAsc, isEqual} from 'date-fns'
+
+import {appColours} from '../../config'
 
 import updateDays from '../../store/actions/updateDays'
 
@@ -9,7 +13,6 @@ import Period from './Period'
 import FreePeriod from './FreePeriod'
 import NowLine from './NowLine'
 
-import {compareAsc, isEqual} from 'date-fns'
 
 const Styles = StyleSheet.create({
   outerContainer: {
@@ -34,14 +37,14 @@ const Styles = StyleSheet.create({
     marginTop: 16,
     fontFamily: 'SF-Pro-Rounded-Regular',
     fontSize: 18,
-    color: 'hsla(0, 0%, 60%, 1)'
+    color: appColours.bottomForeground
   }
 })
 
 export default () => {
   const dispatch = useDispatch()
 
-  const [{events=[], timestamp}, day] = useSelector(({days, selectedDay}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay])
+  const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
 
   useEffect(() => {
     updateDays(dispatch, {day, timestamp})
@@ -65,13 +68,17 @@ export default () => {
     <View style={Styles.eventsContainer}>{elements}</View>
   </>
 
+  const empty = (
+    <View style={Styles.emptyContainer}>
+      {loading ? <ActivityIndicator size="small" color={appColours.bottomForeground} /> : <Text style={Styles.emptyText}>No Events Scheduled</Text>}
+    </View>
+  )
+
   return (
     <View style={Styles.outerContainer}>
       {events.length
         ? timeline
-        : <View style={Styles.emptyContainer}>
-            <Text style={Styles.emptyText}>No Events Scheduled</Text>
-          </View>
+        : empty
       }
     </View>
   )

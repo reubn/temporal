@@ -10,6 +10,7 @@ import store from './store'
 import App from './App'
 
 import {haveCredentials, clearCredentials} from './store/secure'
+// clearCredentials()
 haveCredentials()
 
 class Wrapper extends Component {
@@ -32,7 +33,7 @@ class Wrapper extends Component {
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
-  handleAppStateChange = nextAppState => {
+  handleAppStateChange =  nextAppState => {
     if(nextAppState === 'active') this.setState({...this.state})
   }
 

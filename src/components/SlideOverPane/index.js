@@ -58,7 +58,7 @@ export default class SlideOverPane extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pan: new Animated.Value(0),
+      pan: new Animated.Value(DIMENSIONS.height * -0.4),
       momentumPan: new Animated.Value(0),
       offset: 0,
       slideDontScroll: false,
@@ -68,10 +68,10 @@ export default class SlideOverPane extends Component {
     }
   }
 
-  snapToPosition({position, feedback=Haptics.ImpactFeedbackStyle.Light}){
+  snapToPosition({position, mass=0.8, feedback=Haptics.ImpactFeedbackStyle.Light}){
     Animated.spring(this.state.pan, {
       toValue: position,
-      mass: 0.8
+      mass
     }).start()
 
     this.setState(state => ({...state, offset: position}))
@@ -90,8 +90,8 @@ export default class SlideOverPane extends Component {
         if(!this.state.slidingInProgress) this.setState({slidingInProgress: true})
       },
       onPanResponderRelease: () => {
-        if(this.state.pan._value < DIMENSIONS.height * -0.25) this.snapToPosition({position: DIMENSIONS.height * -0.4})
-        else if(this.state.pan._value > DIMENSIONS.height * 0.25) this.snapToPosition({position: DIMENSIONS.height * 0.45})
+        // if(this.state.pan._value < DIMENSIONS.height * -0.25) this.snapToPosition({position: DIMENSIONS.height * -0.4})
+        if(this.state.pan._value > DIMENSIONS.height * 0.25) this.snapToPosition({position: DIMENSIONS.height * 0.45})
         else this.snapToPosition({position: 0, feedback: Haptics.ImpactFeedbackStyle.Medium})
 
         if(this.state.slidingInProgress) this.setState({slidingInProgress: false})
@@ -126,6 +126,10 @@ export default class SlideOverPane extends Component {
 
   componentWillUnmount() {
     this.state.pan.removeAllListeners()
+  }
+
+  componentDidMount(){
+    setTimeout(() => this.snapToPosition({position: 0, mass: 1.25, feedback: Haptics.ImpactFeedbackStyle.Medium}), 250)
   }
 
   getStyles() {
