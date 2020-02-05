@@ -32,7 +32,7 @@ class Wrapper extends Component {
     AppState.removeEventListener('change', this.handleAppStateChange);
   }
 
-  handleAppStateChange(nextAppState){
+  handleAppStateChange = nextAppState => {
     if(nextAppState === 'active') this.setState({...this.state})
   }
 
