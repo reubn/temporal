@@ -6,12 +6,16 @@ import {differenceInHours} from 'date-fns'
 
 import {hourFactor} from '../hourFactor'
 
+import {appColours} from '../../../config'
+
 const Styles = StyleSheet.create({
   container: {
     width: '95%',
-    borderRadius: 12,
+    borderRadius: 14,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    backgroundColor: appColours.bottomBackground,
+    overflow: 'hidden'
   },
   stripes: {
     width: '100%',
@@ -20,9 +24,8 @@ const Styles = StyleSheet.create({
 })
 
 const stripeThickness = 30
-const stripeColour = 'hsl(0, 0%, 98%)'
 const html = `<html style="
-  background: repeating-linear-gradient(-45deg, transparent, transparent ${stripeThickness}px, ${stripeColour} ${stripeThickness}px, ${stripeColour} ${stripeThickness * 2}px);
+  background: repeating-linear-gradient(-45deg, ${appColours.bottomBackground}, ${appColours.bottomBackground} ${stripeThickness}px, ${appColours.bottomForegroundVerySubtle} ${stripeThickness}px, ${appColours.bottomForegroundVerySubtle} ${stripeThickness * 2}px);
   width: 100%;
   height: 100%;
   border-radius: 12px;

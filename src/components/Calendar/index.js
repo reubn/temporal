@@ -10,6 +10,8 @@ import {format, startOfDay, isEqual} from 'date-fns'
 
 import selectDay from '../../store/actions/selectDay'
 
+import {appColours} from '../../config'
+
 const DIMENSIONS = Dimensions.get('window')
 
 const Styles = StyleSheet.create({
@@ -23,7 +25,7 @@ const Styles = StyleSheet.create({
   calendarHeader: {
     fontSize: 20,
     fontFamily: 'SF-Pro-Rounded-Medium',
-    color: '#ffffff',
+    color: appColours.topForeground,
     marginVertical: 12,
     textAlign: 'center'
   }
@@ -38,7 +40,7 @@ export default () => {
   const dots = useMemo(() => days.reduce((object, {day: d, events: {length}}) => ({
       ...object,
       [format(d, 'yyyy-MM-dd')]: ({
-        dots: Array(length).fill(isEqual(d, startOfDay(new Date())) ? {color: 'hsla(200, 100%, 60%, 1)'} : {color: '#fff', selectedDotColor: 'hsla(200, 100%, 60%, 1)'})
+        dots: Array(length).fill(isEqual(d, startOfDay(new Date())) ? {color: appColours.background} : {color: appColours.topForeground, selectedDotColor: appColours.background})
       })
   }), {}), [days.cacheKey])
 
@@ -54,20 +56,11 @@ export default () => {
       <View style={[Styles.calendar, {paddingTop: insets.top}]}>
         <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
         <CalendarList
-          style={[]}
-          // Initially visible month. Default = Date()
           current={day}
           markedDates={marks}
           markingType="multi-dot"
-
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          // minDate={'2012-05-10'}
-          // // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          // maxDate={'2012-05-30'}
-          // Handler which gets executed on day press. Default = undefined
           onVisibleMonthsChange={({length, 0: {timestamp}}) => {if(length === 1) setCalendarMonth(format(startOfDay(new Date(timestamp)), 'LLLL yyyy'))}}
           onDayPress={({timestamp}) => {selectDay(dispatch, {day: startOfDay(new Date(timestamp))})}}
-          // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
           firstDay={1}
           horizontal={true}
           pagingEnabled={true}
@@ -85,10 +78,10 @@ export default () => {
               },
               today: {
                 borderRadius: 8,
-                backgroundColor: '#fff'
+                backgroundColor: appColours.topForeground
               },
               selected: {
-                backgroundColor: '#fff',
+                backgroundColor: appColours.topForeground,
                 borderRadius: 36
               },
               dot: {
@@ -106,12 +99,13 @@ export default () => {
             },
             backgroundColor: 'transparent',
             calendarBackground: 'transparent',
-            textSectionTitleColor: 'hsla(200, 10%, 100%, 0.9)',
-            selectedDayTextColor: 'hsla(200, 100%, 60%, 1)',
-            dayTextColor: '#fff',
-            textDisabledColor: 'hsla(200, 10%, 100%, 0.7)',
-            selectedDotColor: '#ffffff',
-            indicatorColor: '#ffffff',
+            textSectionTitleColor: appColours.topForegroundSubtleA,
+            selectedDayTextColor: appColours.background,
+            dayTextColor: appColours.topForeground,
+            todayTextColor: appColours.background,
+            textDisabledColor: appColours.topForegroundSubtleB,
+            selectedDotColor: appColours.topForeground,
+            indicatorColor: appColours.topForeground,
             textDayFontFamily: 'SF-Pro-Rounded-Medium',
             textMonthFontFamily: 'SF-Pro-Rounded-Medium',
             textDayHeaderFontFamily: 'SF-Pro-Rounded-Medium',

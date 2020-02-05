@@ -34,7 +34,7 @@ const Styles = StyleSheet.create({
     marginTop: 16,
     fontFamily: 'SF-Pro-Rounded-Regular',
     fontSize: 18,
-    color: 'hsl(0, 0%, 60%)'
+    color: 'hsla(0, 0%, 60%, 1)'
   }
 })
 

@@ -4,6 +4,8 @@ import {View, Text, StyleSheet} from 'react-native'
 import {differenceInHours, addHours, format} from 'date-fns'
 import {hourFactor} from '../hourFactor'
 
+import {appColours} from '../../../config'
+
 const Styles = StyleSheet.create({
   container: {
     width: '20%'
@@ -13,7 +15,7 @@ const Styles = StyleSheet.create({
     height: 100
   },
   hourLabel: {
-    color:'hsl(0, 0%, 30%)',
+    color: appColours.bottomForeground,
     fontWeight: '500',
     fontFamily: 'SF-Pro-Rounded-Medium',
     fontSize: 16,
@@ -21,33 +23,33 @@ const Styles = StyleSheet.create({
     top: -10
   },
   hourQuarterMark: {
-    height:2,
+    height: 2,
     width: 10,
     borderRadius: 2,
-    backgroundColor: 'hsl(0, 0%, 90%)',
-    position:'absolute',
+    backgroundColor: appColours.bottomForegroundSubtle,
+    position: 'absolute',
     top: '25%'
   },
   hourHalfMark: {
-    height:2,
+    height: 2,
     width: 20,
     borderRadius: 2,
-    backgroundColor: 'hsl(0, 0%, 90%)',
-    position:'absolute',
+    backgroundColor: appColours.bottomForegroundSubtle,
+    position: 'absolute',
     top: '50%'
   },
   hourThreeQuarterMark: {
-    height:2,
+    height: 2,
     width: 10,
     borderRadius: 2,
-    backgroundColor: 'hsl(0, 0%, 90%)',
-    position:'absolute',
+    backgroundColor: appColours.bottomForegroundSubtle,
+    position: 'absolute',
     top: '75%'
   },
   extraLastHourLabel: {
     position:'absolute',
     top: '100%',
-    transform:[{translateY: -10}]
+    transform: [{translateY: -10}]
   }
 })
 

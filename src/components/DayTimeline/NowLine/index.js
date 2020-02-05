@@ -6,6 +6,8 @@ import {differenceInHours, differenceInSeconds, startOfDay, isEqual} from 'date-
 
 import {hourFactor} from '../hourFactor'
 
+import {appColours} from '../../../config'
+
 const Styles = StyleSheet.create({
   container: {
     width: '85%',
@@ -15,11 +17,11 @@ const Styles = StyleSheet.create({
     borderRadius: 2,
     zIndex: 1,
     borderWidth: 2,
-    borderColor: '#fff'
+    borderColor: appColours.bottomBackground
   },
   line: {
     height: 2,
-    backgroundColor: 'hsla(0, 0%, 40%, 0.85)',
+    backgroundColor: appColours.bottomForeground,
     borderRadius: 2
   }
 })

@@ -9,24 +9,25 @@ import DayTimeline from './components/DayTimeline'
 import Calendar from './components/Calendar'
 import Login from './components/Login'
 
+import {appColours} from './config'
+
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'hsla(200, 100%, 60%, 1)'
+    backgroundColor: appColours.background
   },
   background: {
     position: 'absolute',
     zIndex: -1,
     width: '100%',
-    height: '100%',
-    backgroundColor: 'hsla(200, 100%, 60%, 1)'
+    height: '100%'
   }
 })
 
 const html = `<html style="
-  background: linear-gradient(180deg, hsla(200, 100%, 60%, 1), hsla(205, 100%, 55%, 1));
+  background: linear-gradient(180deg, ${appColours.background}, ${appColours.backgroundAccent});
   width: 100%;
   height: 100%;
   border-radius: 12px;
@@ -42,8 +43,9 @@ export default () => {
   const [opacity] = useState(new Animated.Value(0))
 
   const show = () => {
-    Animated.spring(opacity, {
-      toValue: 1
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 250
     }).start()
   }
 

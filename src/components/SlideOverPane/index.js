@@ -3,6 +3,8 @@ import {StyleSheet, Dimensions, PanResponder, Animated, View, ScrollView, Toucha
 
 import * as Haptics from 'expo-haptics'
 
+import {appColours} from '../../config'
+
 const DIMENSIONS = Dimensions.get('window')
 
 const Styles = StyleSheet.create({
@@ -15,9 +17,9 @@ const Styles = StyleSheet.create({
     top: 0,
     overflow: 'hidden',
     borderRadius: 12,
-    borderTopLeftRadius: 39,
-    borderTopRightRadius: 39,
-    backgroundColor: '#FFF',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: appColours.bottomBackground,
   },
   handleContainer: {
     position: 'absolute',
@@ -34,21 +36,20 @@ const Styles = StyleSheet.create({
     width: 50,
     height: 4,
     borderRadius: 6,
-    backgroundColor: 'hsl(0, 0%, 40%)'
-    // borderWidth: 2,
-    // borderColor:'#fff'
+    backgroundColor: appColours.bottomForeground
   },
   scrollContainer: {
     width: '90%'
   },
   shadowContainer: {
     width: '100%',
-    borderTopLeftRadius: 39,
-    borderTopRightRadius: 39,
-    shadowColor: "hsla(200, 100%, 20%, 0.25)",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: appColours.bottomBackground,
+    shadowColor: appColours.bottomShadow,
     shadowOffset: {
     	width: 0,
-    	height: -2,
+    	height: -3,
     }
   }
 })
@@ -62,7 +63,8 @@ export default class SlideOverPane extends Component {
       offset: 0,
       slideDontScroll: false,
       scrollBeingTouched: false,
-      listenForScrollTouchMove: false
+      listenForScrollTouchMove: false,
+      slidingInProgress: false
     }
   }
 
@@ -85,11 +87,14 @@ export default class SlideOverPane extends Component {
         const yValue = this.state.offset - dy
         Animated.event([this.state.pan])(yValue)
         Animated.event([this.state.momentumPan])(0)
+        if(!this.state.slidingInProgress) this.setState({slidingInProgress: true})
       },
       onPanResponderRelease: () => {
         if(this.state.pan._value < DIMENSIONS.height * -0.25) this.snapToPosition({position: DIMENSIONS.height * -0.4})
         else if(this.state.pan._value > DIMENSIONS.height * 0.25) this.snapToPosition({position: DIMENSIONS.height * 0.45})
         else this.snapToPosition({position: 0, feedback: Haptics.ImpactFeedbackStyle.Medium})
+
+        if(this.state.slidingInProgress) this.setState({slidingInProgress: false})
       }
     })
 
@@ -124,7 +129,7 @@ export default class SlideOverPane extends Component {
   }
 
   getStyles() {
-    const {pan, momentumPan, slideDontScroll} = this.state
+    const {pan, momentumPan, slideDontScroll, slidingInProgress} = this.state
 
     const cardHeight = pan.interpolate({inputRange: [-DIMENSIONS.height/2, DIMENSIONS.height/2], outputRange: [0, DIMENSIONS.height]})
     const cardDistanceFromTop = cardHeight.interpolate({inputRange: [0, DIMENSIONS.height], outputRange: [DIMENSIONS.height, 0]})
@@ -150,7 +155,7 @@ export default class SlideOverPane extends Component {
         Styles.shadowContainer,
         {height: cardHeight},
         {top: cardDistanceFromTopMomentumCompensated, position: 'absolute'},
-        slideDontScroll ? {
+        (slideDontScroll || slidingInProgress) ? {
           shadowOpacity: 1,
           shadowRadius: 10,
           elevation: 10,
@@ -173,7 +178,7 @@ export default class SlideOverPane extends Component {
       <Animated.View style={shadowContainerStyle}>
         <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
           <TouchableOpacity
-          style={handleContainerStyle}
+            style={handleContainerStyle}
             onPressIn={() => this.setState({slideDontScroll: true})}
             onPressOut={() => this.setState({slideDontScroll: false})}
             >

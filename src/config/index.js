@@ -1,3 +1,7 @@
+import * as appColours from './appColours'
+
+export {appColours}
+
 export const eventCategories = [
   {
     searchString: 'Lecture',
