@@ -30,7 +30,6 @@ const html = `<html style="
   background: linear-gradient(180deg, ${appColours.background}, ${appColours.backgroundAccent});
   width: 100%;
   height: 100%;
-  border-radius: 12px;
 ">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
 </html>`

@@ -37,7 +37,7 @@ export const eventCategories = [
     searchString: 'HARC',
     category: 'harc',
     title: 'Human Anatomy Resource Centre',
-    colour: 'hsla(0, 100%, 66%, 1)'
+    colour: 'hsla(30, 100%, 52%, 1)'
   },
   {
     searchString: 'CBL(small)',
@@ -82,5 +82,5 @@ export const eventCategories = [
 export const defaultCategory = {
   category: 'other',
   title: '',
-  colour: 'hsla(0, 0%, 0%, 1)'
+  colour: 'hsla(0, 0%, 64%, 1)'
 }

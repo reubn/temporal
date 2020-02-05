@@ -14,7 +14,6 @@ const Styles = StyleSheet.create({
     borderRadius: 14,
     marginTop: 5,
     marginBottom: 5,
-    backgroundColor: appColours.bottomBackground,
     overflow: 'hidden'
   },
   stripes: {
@@ -39,9 +38,8 @@ export default ({style: externalStyle, free}) => {
   const [opacity] = useState(new Animated.Value(0))
 
   const show = () => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500
+    Animated.spring(opacity, {
+      toValue: 1
     }).start()
   }
 

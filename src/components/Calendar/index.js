@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react'
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, ScrollView, Text, StyleSheet, Dimensions} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {useSafeArea} from 'react-native-safe-area-context'
@@ -20,13 +20,14 @@ const Styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: '100%',
-    height: '100%'
+    height: DIMENSIONS.height / 2,
+    overflow: 'visible'
   },
   calendarHeader: {
     fontSize: 20,
     fontFamily: 'SF-Pro-Rounded-Medium',
     color: appColours.topForeground,
-    marginVertical: 12,
+    marginVertical: 5,
     textAlign: 'center'
   }
 })
@@ -52,10 +53,10 @@ export default () => {
   const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
 
   return (
-    <View style={[Styles.outerContainer]}>
-      <View style={[Styles.calendar, {paddingTop: insets.top}]}>
+    <ScrollView style={[Styles.outerContainer, {paddingTop: insets.top}]} showsVerticalScrollIndicator={false} overScrollMode="always">
         <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
         <CalendarList
+        style={{paddingBottom: 38 / 2}}
           current={day}
           markedDates={marks}
           markingType="multi-dot"
@@ -65,8 +66,6 @@ export default () => {
           horizontal={true}
           pagingEnabled={true}
           hideExtraDays={false}
-          calendarHeight={DIMENSIONS.height / 2}
-
           hideArrows={true}
           theme={{
             'stylesheet.day.multiDot': {
@@ -117,7 +116,7 @@ export default () => {
           }}
 
         />
-      </View>
-    </View>
+
+    </ScrollView>
   )
 }
