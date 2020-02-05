@@ -1,4 +1,4 @@
-// export const background = 'hsla(200, 100%, 60%, 1)'
+// export const background = 'hsla(190, 100%, 60%, 1)'
 // export const backgroundAccent = 'hsla(205, 100%, 55%, 1)'
 //
 //
@@ -17,8 +17,8 @@
 
 
 
-export const background = 'hsla(48, 96%, 50%, 1)'
-export const backgroundAccent = 'hsla(38, 98%, 48%, 1)'
+export const background = 'hsla(48, 98%, 50%, 1)'
+export const backgroundAccent = 'hsla(30, 98%, 48%, 1)'
 
 
 export const topForeground = 'hsla(0, 0%, 100%, 1)'

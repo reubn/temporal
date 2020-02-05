@@ -27,7 +27,7 @@ const Styles = StyleSheet.create({
 })
 
 const html = `<html style="
-  background: linear-gradient(180deg, ${appColours.background}, ${appColours.backgroundAccent});
+  background: linear-gradient(135deg, ${appColours.background}, ${appColours.backgroundAccent});
   width: 100%;
   height: 100%;
 ">
