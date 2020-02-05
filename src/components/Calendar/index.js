@@ -80,7 +80,8 @@ export default () => {
               base: {
                 height: 38,
                 width: 38,
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingTop: 5
               },
               today: {
                 borderRadius: 8,
