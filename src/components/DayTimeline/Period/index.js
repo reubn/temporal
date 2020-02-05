@@ -49,10 +49,18 @@ const Styles = StyleSheet.create({
 
 export default ({style: externalStyle, event}) => {
   const [state, setState] = useState({event})
+  const [now, setNow] = useState(new Date())
 
   const {start, end, category, title, location, code} = state.event
 
-  const ended = differenceInSeconds(new Date(), end) > 0
+
+  useEffect(() => {
+    const timer = setTimeout(() => setNow(new Date()), 1000)
+
+    return () => clearTimeout(timer)
+  }, [now])
+
+  const ended = differenceInSeconds(now, end) >= Math.min(-differenceInSeconds(end, start) * 0.25, -15 * 60)
 
   const length = differenceInHours(end, start)
   const height = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
