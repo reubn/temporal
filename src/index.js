@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Provider} from 'react-redux'
-import {AppState, AppRegistry, Platform} from 'react-native';
+import {AppState, AppRegistry, Platform, ActionSheetIOS} from 'react-native';
+
+import RNShake from 'react-native-shake'
 
 import * as Font from 'expo-font'
 
@@ -13,6 +15,15 @@ import {haveCredentials, clearCredentials} from './store/secure'
 // clearCredentials()
 haveCredentials()
 
+const showLogoutActionSheet = () => {
+  ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Logout'],
+      destructiveButtonIndex: 1,
+      cancelButtonIndex: 0,
+    }, buttonIndex => buttonIndex === 1 && clearCredentials()
+  )
+}
+
 class Wrapper extends Component {
   state = {
     ready: false,
@@ -20,6 +31,8 @@ class Wrapper extends Component {
 
   async componentDidMount() {
     AppState.addEventListener('change', this.handleAppStateChange)
+
+    RNShake.addEventListener('ShakeEvent', showLogoutActionSheet)
 
     await Font.loadAsync({
       'SF-Pro-Rounded-Medium': require('../assets/fonts/SF-Pro-Rounded-Medium.otf'),
@@ -30,7 +43,8 @@ class Wrapper extends Component {
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange)
+    RNShake.removeEventListener('ShakeEvent')
   }
 
   handleAppStateChange =  nextAppState => {

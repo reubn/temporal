@@ -24,6 +24,8 @@ export default (state=initial, action) => {
     return mutableState
   }
 
+  if(action.type === 'CLEAR_CACHES') return initial
+
   if(action.type === rehydrateActionType) return action.data.days
 
   return state

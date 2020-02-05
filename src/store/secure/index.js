@@ -43,7 +43,10 @@ export const setCredentials = async credentials => {
 }
 
 export const clearCredentials = async () => {
+  console.log('CLEARING CREDENTIALS')
   dispatch({type: 'DO_NOT_HAVE_CREDENTIALS'})
+  dispatch({type: 'CLEAR_CACHES'})
+
   await SecureStore.deleteItemAsync(secureStoreCredentialsKey).catch(() => true)
 
   return true
