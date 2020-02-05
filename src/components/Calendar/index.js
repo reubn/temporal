@@ -51,12 +51,14 @@ export default () => {
   }, {})
 
   const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
+  const [compactLayout, setCompactLayout] = useState(false)
 
   return (
     <ScrollView style={[Styles.outerContainer, {paddingTop: insets.top}]} showsVerticalScrollIndicator={false} overScrollMode="always">
         <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
         <CalendarList
-        style={{paddingBottom: 38 / 2}}
+          key={compactLayout ? 'c' : 'n'}
+          style={{paddingBottom: 38 / 2}}
           current={day}
           markedDates={marks}
           markingType="multi-dot"
@@ -67,13 +69,15 @@ export default () => {
           pagingEnabled={true}
           hideExtraDays={false}
           hideArrows={true}
+          onLayout={({nativeEvent: {layout: {height}}}) => setCompactLayout(((12 + (38 * 6)) - DIMENSIONS.height / 2 )> -200)}
           theme={{
             'stylesheet.day.multiDot': {
               base: {
                 height: 38,
                 width: 38,
                 alignItems: 'center',
-                paddingTop: 5
+                paddingTop: 5,
+                marginVertical: compactLayout ? -6 : 0
               },
               today: {
                 borderRadius: 8,
