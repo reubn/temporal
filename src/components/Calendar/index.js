@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react'
-import {View, ScrollView, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {useSafeArea} from 'react-native-safe-area-context'
@@ -54,7 +54,7 @@ export default () => {
   const [compactLayout, setCompactLayout] = useState(false)
 
   return (
-    <ScrollView style={[Styles.outerContainer, {paddingTop: insets.top}]} showsVerticalScrollIndicator={false} overScrollMode="always">
+    <View style={[Styles.outerContainer, {paddingTop: insets.top}]}>
         <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
         <CalendarList
           key={compactLayout ? 'c' : 'n'}
@@ -121,6 +121,6 @@ export default () => {
 
         />
 
-    </ScrollView>
+    </View>
   )
 }
