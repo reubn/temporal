@@ -2,6 +2,8 @@ import React, {useState, useEffect, useMemo} from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
+import * as Haptics from 'expo-haptics'
+
 import {useSafeArea} from 'react-native-safe-area-context'
 
 import {CalendarList} from 'react-native-calendars'
@@ -62,8 +64,16 @@ export default () => {
           current={day}
           markedDates={marks}
           markingType="multi-dot"
-          onVisibleMonthsChange={({length, 0: {timestamp}}) => {if(length === 1) setCalendarMonth(format(startOfDay(new Date(timestamp)), 'LLLL yyyy'))}}
-          onDayPress={({timestamp}) => {selectDay(dispatch, {day: startOfDay(new Date(timestamp))})}}
+          onVisibleMonthsChange={({length, 0: {timestamp}}) => {
+            if(length === 1){
+              setCalendarMonth(format(startOfDay(new Date(timestamp)), 'LLLL yyyy'))
+
+              Haptics.selectionAsync()
+            }
+          }}
+          onDayPress={({timestamp}) => {
+            selectDay(dispatch, {day: startOfDay(new Date(timestamp))})
+          }}
           firstDay={1}
           horizontal={true}
           pagingEnabled={true}
