@@ -1,6 +1,8 @@
-import * as appColours from './appColours'
+import {Appearance} from 'react-native-appearance'
 
-export {appColours}
+import {dark, light} from './appColours'
+
+export const appColours = {dark, light}[Appearance.getColorScheme()] || light
 
 export const eventCategories = [
   {
