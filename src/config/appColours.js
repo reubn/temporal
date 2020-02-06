@@ -10,6 +10,7 @@ export const light = {
 
   bottomForeground: 'hsla(0, 0%, 30%, 1)',
   bottomForegroundSubtle: 'hsla(0, 0%, 90%, 1)',
+  bottomForegroundLessSubtle: 'hsla(0, 0%, 90%, 1)',
   bottomForegroundVerySubtle: 'hsla(0, 0%, 98%, 1)',
 
   bottomBackground: 'hsla(0, 0%, 100%, 1)',
@@ -29,6 +30,7 @@ export const dark = {
 
   bottomForeground: 'hsla(0, 0%, 30%, 1)',
   bottomForegroundSubtle: 'hsla(0, 0%, 16%, 1)',
+  bottomForegroundLessSubtle: 'hsla(0, 0%, 18%, 1)',
   bottomForegroundVerySubtle: 'hsla(0, 0%, 16%, 1)',
 
   bottomBackground: 'hsla(0, 0%, 14%, 1)',

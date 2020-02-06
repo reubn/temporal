@@ -26,7 +26,7 @@ const Styles = StyleSheet.create({
     height: 2,
     width: 10,
     borderRadius: 2,
-    backgroundColor: appColours.bottomForegroundSubtle,
+    backgroundColor: appColours.bottomForegroundLessSubtle,
     position: 'absolute',
     top: '25%'
   },
@@ -34,7 +34,7 @@ const Styles = StyleSheet.create({
     height: 2,
     width: 20,
     borderRadius: 2,
-    backgroundColor: appColours.bottomForegroundSubtle,
+    backgroundColor: appColours.bottomForegroundLessSubtle,
     position: 'absolute',
     top: '50%'
   },
@@ -42,7 +42,7 @@ const Styles = StyleSheet.create({
     height: 2,
     width: 10,
     borderRadius: 2,
-    backgroundColor: appColours.bottomForegroundSubtle,
+    backgroundColor: appColours.bottomForegroundLessSubtle,
     position: 'absolute',
     top: '75%'
   },
