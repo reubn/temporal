@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {Animated, View, Text, StyleSheet} from 'react-native'
 
 import {differenceInHours, addHours, format} from 'date-fns'
 import {hourFactor} from '../hourFactor'
@@ -70,14 +70,19 @@ const createHourPeriod = ({first, hours}) => (_, i) => {
   )
 }
 
-export default ({first, last}) => {
+export default ({first, last, popState}) => {
   const hoursDifference = differenceInHours(last.end, first.start)
   const hours = Math.ceil(hoursDifference)
   const containerHeight = hours * hourFactor
 
+  const animated = {
+    opacity: popState.interpolate({inputRange: [0, 1], outputRange: [1, 0]}),
+    paddingLeft: popState.interpolate({inputRange: [0, 1], outputRange: [0, -20]})
+  }
+
   return (
-    <View style={[Styles.container, {height: containerHeight}]}>
+    <Animated.View style={[Styles.container, {height: containerHeight}, animated]}>
       {Array.from({length: hours}, createHourPeriod({first, hours}))}
-    </View>
+    </Animated.View>
   )
 }

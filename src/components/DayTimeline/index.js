@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import {ActivityIndicator, View, Text, StyleSheet} from 'react-native'
+import React, {useState, useEffect, useRef} from 'react'
+import {Animated, ActivityIndicator, View, Text, StyleSheet} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
 import {compareAsc, isEqual} from 'date-fns'
@@ -41,10 +41,13 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default () => {
+export default ({scrollBeingTouched}) => {
   const dispatch = useDispatch()
 
   const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
+
+  const {current: popState} = useRef(new Animated.Value(0))
+  const {current: initialPopState} = useRef(new Animated.Value(0))
 
   useEffect(() => {
     updateDays(dispatch, {day, timestamp})
@@ -60,11 +63,15 @@ export default () => {
     return [...array, ...(freeTime ? [freeTime, event] : [event])]
   }, [])
 
-  const elements = periods.map((eventOrFree, i, array) => eventOrFree.free ? <FreePeriod key={`free-${i}`} free={eventOrFree}  /> : <Period key={eventOrFree.id} event={eventOrFree}  />)
+  const elements = periods.map((eventOrFree, i, array) => (
+    eventOrFree.free
+    ? <FreePeriod key={`free-${i}`} free={eventOrFree}  />
+    : <Period key={eventOrFree.id} event={eventOrFree} initialPopState={initialPopState} popState={popState} scrollBeingTouched={scrollBeingTouched}/>
+  ))
 
   const timeline = <>
-    <Scale first={periods[0]} last={periods[periods.length - 1]} />
-    <NowLine first={periods[0]} last={periods[periods.length - 1]} />
+    <Scale first={periods[0]} last={periods[periods.length - 1]} popState={popState} />
+    <NowLine first={periods[0]} last={periods[periods.length - 1]} popState={popState} />
     <View style={Styles.eventsContainer}>{elements}</View>
   </>
 

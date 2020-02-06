@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, cloneElement} from 'react'
 import {StyleSheet, Dimensions, PanResponder, Animated, View, ScrollView, TouchableOpacity} from 'react-native'
 
 import * as Haptics from 'expo-haptics'
@@ -176,13 +176,24 @@ export default class SlideOverPane extends Component {
   }
 
   render() {
-    const {main: mainStyle, scrollContainer: scrollContainerStyle, scroll: scrollStyle, handleContainer: handleContainerStyle, shadowContainer: shadowContainerStyle} = this.getStyles()
+    const {
+      main: mainStyle,
+      scrollContainer: scrollContainerStyle,
+      scroll: scrollStyle,
+      handleContainer: handleContainerStyle,
+      shadowContainer: shadowContainerStyle
+    } = this.getStyles()
+
+    const passedDownProps = {
+      scrollBeingTouched: this.state.scrollBeingTouched
+    }
 
     return (
       <Animated.View style={shadowContainerStyle}>
         <Animated.View style={mainStyle} {...this.panResponder.panHandlers}>
           <TouchableOpacity
             style={handleContainerStyle}
+            disabled={this.state.scrollBeingTouched}
             onPressIn={() => this.setState({slideDontScroll: true})}
             onPressOut={() => this.setState({slideDontScroll: false})}
             >
@@ -191,11 +202,10 @@ export default class SlideOverPane extends Component {
           <Animated.View style={scrollContainerStyle}>
             <ScrollView
               {...this.scrollPanResponder.panHandlers}
+              disableScrollViewPanResponder
               scrollEnabled={!this.state.listenForScrollTouchMove}
-
               onMomentumScrollBegin={() => this.setState({scrollHasMomentum: true})}
               onMomentumScrollEnd={() => this.setState({scrollHasMomentum: false})}
-
               onScroll={({nativeEvent: {contentOffset: {y}, contentSize: {height: contentHeight}, layoutMeasurement: {height: layoutHeight}}}) => {
                   if((y < 0) && this.state.scrollBeingTouched && !this.state.slideDontScroll) return this.setState({slideDontScroll: true, listenForScrollTouchMove: true}) // Manual Scroll
                   if(this.state.scrollHasMomentum && y < 0) return Animated.event([this.state.momentumPan])(y) // Top Bounce
@@ -204,7 +214,7 @@ export default class SlideOverPane extends Component {
               scrollEventThrottle={1}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={scrollStyle}>
-                {this.props.children}
+                {cloneElement(this.props.children, passedDownProps)}
             </ScrollView>
           </Animated.View>
         </Animated.View>

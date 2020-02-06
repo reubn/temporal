@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, StyleSheet} from 'react-native'
+import {Animated, View, StyleSheet} from 'react-native'
 import {WebView} from 'react-native-webview'
 
 import {differenceInHours, differenceInSeconds, startOfDay, isEqual} from 'date-fns'
@@ -13,7 +13,7 @@ const Styles = StyleSheet.create({
     width: '85%',
     height: 6,
     position: 'absolute',
-    right: 0,
+    right: '0%',
     borderRadius: 2,
     zIndex: 1,
     borderWidth: 2,
@@ -26,7 +26,7 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default ({style: externalStyle, first: {start}, last: {end}}) => {
+export default ({first: {start}, last: {end}, popState}) => {
   const [now, setNow] = useState(new Date())
 
   useEffect(() => {
@@ -39,9 +39,15 @@ export default ({style: externalStyle, first: {start}, last: {end}}) => {
 
   const top = Math.max(0, Math.min(hourFactor * (differenceInSeconds(now, start) / 60 / 60), (differenceInHours(end, start) * hourFactor)))
 
+  const animated = {
+    top,
+    width: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.width, '0%']}),
+    right: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.right, '50%']})
+  }
+
   return (
-    <View style={[externalStyle, Styles.container, {top}]}>
-    <View style={Styles.line}/>
-    </View>
+    <Animated.View style={[Styles.container, animated]}>
+      <View style={Styles.line}/>
+    </Animated.View>
   )
 }
