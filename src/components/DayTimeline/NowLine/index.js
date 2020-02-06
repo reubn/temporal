@@ -42,7 +42,8 @@ export default ({first: {start}, last: {end}, popState}) => {
   const animated = {
     top,
     width: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.width, '0%']}),
-    right: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.right, '50%']})
+    right: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.right, '50%']}),
+    borderWidth: popState.interpolate({inputRange: [0, 1], outputRange: [Styles.container.borderWidth, 0]})
   }
 
   return (
