@@ -17,7 +17,7 @@ export const light = {
 
   bottomShadow: 'hsla(200, 100%, 20%, 0.25)',
 
-  mapStyle: 'mapbox://styles/reubnn/ck6bylsh73tay1imgusyf6qgg'
+  mapStyle: 'mapbox://styles/reubnn/ck6dwbbik0zmc1io4qigoyg66'
 }
 
 export const dark = {
