@@ -47,10 +47,10 @@ export default () => {
       })
   }), {}), [days.cacheKey])
 
-  const marks = Object.keys(dots).reduce((result, key) => {
+  const marks = useMemo(() => Object.keys(dots).reduce((result, key) => {
     result[key] = {...dots[key], ...(key === format(day, 'yyyy-MM-dd') ? {dots: [], selected: true} : {selected: false})}
     return result
-  }, {})
+  }, {}), [dots, day])
 
   const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
   const [compactLayout, setCompactLayout] = useState(false)
@@ -72,7 +72,9 @@ export default () => {
             }
           }}
           onDayPress={({timestamp}) => {
-            selectDay(dispatch, {day: startOfDay(new Date(timestamp))})
+            requestAnimationFrame(() => {
+              selectDay(dispatch, {day: startOfDay(new Date(timestamp))})
+            })
           }}
           firstDay={1}
           horizontal={true}

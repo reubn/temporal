@@ -72,7 +72,7 @@ export default ({style: externalStyle, event, buildings, popState, initialPopSta
   }, [building])
 
   useEffect(() => {
-    const timer = setTimeout(() => setNow(new Date()), 1000)
+    const timer = setTimeout(() => requestAnimationFrame(() => setNow(new Date())), 1000)
 
     return () => clearTimeout(timer)
   }, [now])

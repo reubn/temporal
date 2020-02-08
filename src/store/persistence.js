@@ -12,7 +12,7 @@ const hydrateJSON = (key, value) => {
 
 export default async ({getState, dispatch, subscribe}) => {
   // await AsyncStorage.clear()
-  
+
   // rehydrate store
   try {
     const json = await AsyncStorage.getItem(storageKey)

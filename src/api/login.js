@@ -24,9 +24,7 @@ export default async credentials => {
     "body": formData.toString()
   })
 
-  console.log(url)
-  
-  const ok = url === 'https://timetables.liverpool.ac.uk/'
+  const ok = url === 'https://timetables.liverpool.ac.uk/' || url === 'https://timetables.liverpool.ac.uk/?'
   if(!ok) clearCredentials()
 
   return ok
