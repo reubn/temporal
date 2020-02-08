@@ -88,3 +88,22 @@ export const defaultCategory = {
   title: '',
   colour: 'hsla(0, 0%, 64%, 1)'
 }
+
+export const locationFinder = ({code, category}) => {
+  if(category === 'harc') return {
+    description: `Top Floor
+Sherrington Building`,
+    buildingCode: 'SHER'
+  }
+  if(category === 'cs') return {
+    description: `Clinical Skills & Learning Centre
+Block E
+Waterhouse Building`,
+    buildingCode: 'O-WH'
+  }
+
+  return {
+    description: '',
+    buildingCode: ''
+  }
+}

@@ -1,6 +1,6 @@
 import {parseISO, format, isEqual, startOfDay, eachDayOfInterval, min, max} from 'date-fns'
 
-import {eventCategories, defaultCategory} from '../config'
+import {eventCategories, defaultCategory, locationFinder} from '../config'
 
 import login from './login'
 
@@ -39,10 +39,16 @@ export default async ({start=new Date(), end=new Date()}={}) => {
       id,
       category,
       code,
-      location: {
-        description: locationdesc.replace(/\<.+?\>/g, ''),
-        buildingCode: (locations.length ? locations[0].BuildingCode : undefined) || undefined
+      location: locations.length
+      ? {
+        description: locationdesc.replace(/\<.+?\>/g, '')
+                      .replace(/-/g, ',')
+                      .trim()
+                      .split(',')
+                      .filter(a => a && !a.includes('Floor')).map(a => a.replace(/([a-zA-Z])(\w*)/g, (_, l, rest) => `${l.toUpperCase()}${rest}`).trim()).reverse().join('\n'),
+        buildingCode: (locations[0].BuildingCode) || undefined
       }
+      : locationFinder({code, category})
     }
   })
 

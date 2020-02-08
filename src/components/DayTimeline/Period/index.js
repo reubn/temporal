@@ -52,7 +52,8 @@ const Styles = StyleSheet.create({
   location: {
     fontSize: 16,
     fontWeight: '600',
-    fontFamily: 'SF-Pro-Rounded-Regular'
+    fontFamily: 'SF-Pro-Rounded-Regular',
+    marginTop: 2
   }
 })
 
@@ -85,7 +86,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
   const colour = new Color(colourString)//.desaturate( ? 1 : 0)
 
-  const displayedTitle = title || categoryObjectTitle || [...code.split('/')].pop()
+  const displayedTitle = title || categoryObjectTitle || [...code.split('/')].pop().replace(/[a-zA-Z]+/g, word => ['to', 'and', 'of', 'with', 'in', 'on'].includes(word) ? word : `${[...word].map((l, i) => i ? l : l.toUpperCase()).join('')}`)
 
   const [arePopping, setArePopping] = useState(false)
 
@@ -179,7 +180,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
         <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>
           <View style={Styles.textContainer}>
             <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{displayedTitle}</Text>
-            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
+            <Text ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
           </View>
           {mapExpansion}
         </View>
