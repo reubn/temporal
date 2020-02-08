@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState} from 'react'
-import {StyleSheet, View, Text, Animated} from 'react-native'
+import {StyleSheet, View, Text, Animated, Dimensions} from 'react-native'
 import {useSelector} from 'react-redux'
 
 import {WebView} from 'react-native-webview'
@@ -11,6 +11,8 @@ import Login from './components/Login'
 
 import {appColours} from './config'
 
+const DIMENSIONS = Dimensions.get('window')
+
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,9 +22,27 @@ const Styles = StyleSheet.create({
   },
   background: {
     position: 'absolute',
-    zIndex: -1,
+    zIndex: -2,
     width: '100%',
     height: '100%'
+  },
+  hidden: {
+    position: 'absolute',
+    bottom: DIMENSIONS.height * 0.075,
+    width: '100%',
+    left: 0,
+    zIndex: -1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    opacity: 0.5
+  },
+  hiddenText: {
+    color: appColours.topForeground,
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'SF-Pro-Rounded-Medium',
+    textAlign: 'center'
   }
 })
 
@@ -60,6 +80,10 @@ export default () => {
   return (
     <View style={Styles.container}>
       {haveCredentials ? main : <Login />}
+      <View style={[Styles.hidden]}>
+        <Text style={[Styles.hiddenText]}>https://reuben.science</Text>
+        <Text style={[Styles.hiddenText, {marginTop: 2, fontSize: 10}]}>© Mapbox  © OpenStreetMap</Text>
+      </View>
       <AnimatedWebView
         pointerEvents="none"
         source={{html}}
