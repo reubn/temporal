@@ -36,24 +36,27 @@ const Styles = StyleSheet.create({
 
 const Calendar = () => {
   const dispatch = useDispatch()
-  const [days, day] = useSelector(({days, selectedDay}) => [days, selectedDay])
+
+  const days = useSelector(({days}) => days)
+  const day = useSelector(({selectedDay}) => selectedDay)
+  const selectedDayString = format(day, 'yyyy-MM-dd')
+
+  const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
+  const [compactLayout, setCompactLayout] = useState(false)
 
   const insets = useSafeArea()
 
-  const dots = useMemo(() => days.reduce((object, {day: d, events: {length}}) => ({
+  const dots = useMemo(() => days.reduce((object, {day: d, dayString, events: {length}}) => ({
       ...object,
-      [format(d, 'yyyy-MM-dd')]: ({
+      [dayString]: ({
         dots: Array(length).fill(isEqual(d, startOfDay(new Date())) ? {color: appColours.background} : {color: appColours.topForeground, selectedDotColor: appColours.background})
       })
   }), {}), [days.cacheKey])
 
   const marks = useMemo(() => Object.keys(dots).reduce((result, key) => {
-    result[key] = {...dots[key], ...(key === format(day, 'yyyy-MM-dd') ? {dots: [], selected: true} : {selected: false})}
+    result[key] = {...dots[key], ...(key === selectedDayString ? {dots: [], selected: true} : {selected: false})}
     return result
   }, {}), [dots, day])
-
-  const [calendarMonth, setCalendarMonth] = useState(format(new Date(day), 'LLLL yyyy'))
-  const [compactLayout, setCompactLayout] = useState(false)
 
   return (
     <View style={[Styles.outerContainer, {paddingTop: insets.top}]}>

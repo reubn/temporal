@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useMemo} from 'react'
 import {Animated, ActivityIndicator, View, Text, StyleSheet} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
@@ -61,7 +61,7 @@ const DayTimeline = ({scrollBeingTouched}) => {
     updateDays(dispatch, {day, timestamp})
   }, [day])
 
-  const periods = events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
+  const periods = useMemo(() => events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
 
     const freeTime = array.length && !isEqual(array[array.length - 1].end, start)
@@ -69,7 +69,7 @@ const DayTimeline = ({scrollBeingTouched}) => {
       : undefined
 
     return [...array, ...(freeTime ? [freeTime, event] : [event])]
-  }, [])
+  }, []), [events])
 
   const elements = periods.map((eventOrFree, i, array) => (
     eventOrFree.free

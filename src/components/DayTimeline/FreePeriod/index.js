@@ -57,6 +57,7 @@ const FreePeriod = ({style: externalStyle, free}) => {
         style={{opacity}}
         onLoad={show}
         scrollEnabled={false}
+        onShouldStartLoadWithRequest={() => true}
       />
     </View>
   )
