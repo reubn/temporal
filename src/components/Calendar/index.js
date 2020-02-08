@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react'
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, StyleSheet, Dimensions, TouchableOpacity} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
 
 import * as Haptics from 'expo-haptics'
@@ -8,7 +8,7 @@ import {useSafeArea} from 'react-native-safe-area-context'
 
 import {CalendarList} from 'react-native-calendars'
 
-import {format, startOfDay, isEqual} from 'date-fns'
+import {format, startOfDay, isEqual, addDays} from 'date-fns'
 
 import selectDay from '../../store/actions/selectDay'
 
@@ -60,7 +60,14 @@ const Calendar = () => {
 
   return (
     <View style={[Styles.outerContainer, {paddingTop: insets.top}]}>
-        <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
+        <TouchableOpacity onPress={() => {
+          requestAnimationFrame(() => {
+            selectDay(dispatch, {day: startOfDay(addDays(new Date(), 1))}) // Hack to force calendar to update
+            selectDay(dispatch, {day: startOfDay(new Date())})
+          })
+        }}>
+          <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
+        </TouchableOpacity>
         <CalendarList
           key={compactLayout ? 'c' : 'n'}
           style={{paddingBottom: 38 / 2}}
