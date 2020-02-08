@@ -54,6 +54,14 @@ const Styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'SF-Pro-Rounded-Regular',
     marginTop: 2
+  },
+  extra: {
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: -1
   }
 })
 
@@ -131,7 +139,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
 
   const mapExpansion = coords ? (
-    <Animated.View style={[{height: '100%', width: '100%', position: 'absolute', top: 0, left: 0, zIndex: -1}, animatedExtra]}>
+    <Animated.View style={[Styles.extra, animatedExtra]}>
       <MapboxGL.MapView
         style={[{flex: 1}]}
 
