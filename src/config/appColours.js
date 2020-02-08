@@ -21,8 +21,8 @@ export const light = {
 }
 
 export const dark = {
-  background: 'hsla(200, 2%, 50%, 1)',
-  backgroundAccent: 'hsla(250, 5%, 20%, 1)',
+  background: 'hsla(48, 98%, 50%, 1)',
+  backgroundAccent: 'hsla(30, 98%, 48%, 1)',
 
 
   topForeground: 'hsla(0, 0%, 100%, 1)',
