@@ -70,7 +70,7 @@ const createHourPeriod = ({first, hours}) => (_, i) => {
   )
 }
 
-export default ({first, last, popState}) => {
+const Scale = ({first, last, popState}) => {
   const hoursDifference = differenceInHours(last.end, first.start)
   const hours = Math.ceil(hoursDifference)
   const containerHeight = hours * hourFactor
@@ -86,3 +86,5 @@ export default ({first, last, popState}) => {
     </Animated.View>
   )
 }
+
+export default Scale

@@ -34,7 +34,7 @@ const html = `<html style="
 
 const AnimatedWebView = Animated.createAnimatedComponent(WebView)
 
-export default ({style: externalStyle, free}) => {
+const FreePeriod = ({style: externalStyle, free}) => {
   const [opacity] = useState(new Animated.Value(0))
 
   const show = () => {
@@ -61,3 +61,5 @@ export default ({style: externalStyle, free}) => {
     </View>
   )
 }
+
+export default FreePeriod

@@ -34,7 +34,7 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default () => {
+const Calendar = () => {
   const dispatch = useDispatch()
   const [days, day] = useSelector(({days, selectedDay}) => [days, selectedDay])
 
@@ -136,3 +136,5 @@ export default () => {
     </View>
   )
 }
+
+export default Calendar

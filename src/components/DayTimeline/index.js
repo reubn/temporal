@@ -43,7 +43,7 @@ const Styles = StyleSheet.create({
 
 const emptyObject = {}
 
-export default ({scrollBeingTouched}) => {
+const DayTimeline = ({scrollBeingTouched}) => {
   const dispatch = useDispatch()
 
   // const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
@@ -98,3 +98,5 @@ export default ({scrollBeingTouched}) => {
     </View>
   )
 }
+
+export default DayTimeline

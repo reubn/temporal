@@ -38,6 +38,7 @@
   "devDependencies": {
     "@babel/core": "~7.6.0",
     "babel-jest": "~24.9.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "jest": "~24.9.0",
     "jetifier": "~1.6.4",
     "metro-react-native-babel-preset": "~0.56.0",

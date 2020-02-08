@@ -26,7 +26,7 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default ({first: {start}, last: {end}, popState}) => {
+const NowLine = ({first: {start}, last: {end}, popState}) => {
   const [now, setNow] = useState(new Date())
 
   useEffect(() => {
@@ -52,3 +52,5 @@ export default ({first: {start}, last: {end}, popState}) => {
     </Animated.View>
   )
 }
+
+export default NowLine

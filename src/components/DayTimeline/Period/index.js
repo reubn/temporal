@@ -56,7 +56,7 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default ({style: externalStyle, event, buildings, popState, initialPopState, scrollBeingTouched}) => {
+const Period = ({style: externalStyle, event, buildings, popState, initialPopState, scrollBeingTouched}) => {
   const dispatch = useDispatch()
 
   const [state, setState] = useState({event})
@@ -187,3 +187,5 @@ export default ({style: externalStyle, event, buildings, popState, initialPopSta
     </TouchableWithoutFeedback>
   )
 }
+
+export default Period
