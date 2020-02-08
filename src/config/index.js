@@ -2,6 +2,8 @@ import {Appearance} from 'react-native-appearance'
 
 import {dark, light} from './appColours'
 
+export {mapboxToken} from './secrets'
+
 export const appColours = {dark, light}[Appearance.getColorScheme()] || light
 
 export const eventCategories = [

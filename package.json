@@ -10,9 +10,10 @@
   "dependencies": {
     "@react-native-community/async-storage": "^2.0.0-rc.1",
     "@react-native-community/async-storage-backend-legacy": "next",
+    "@react-native-mapbox-gl/maps": "^7.2.0",
     "color": "^3.1.2",
     "date-fns": "^2.9.0",
-    "expo": "~36.0.0",
+    "expo": "^36.0.2",
     "expo-haptics": "^8.0.0",
     "expo-secure-store": "^8.0.0",
     "react": "~16.9.0",

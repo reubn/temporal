@@ -9,6 +9,7 @@ import * as Font from 'expo-font'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 import store from './store'
+import maps from './maps'
 import App from './App'
 
 import {haveCredentials, clearCredentials} from './store/secure'

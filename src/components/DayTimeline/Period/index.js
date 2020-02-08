@@ -1,10 +1,15 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useMemo} from 'react'
 import {View, Text, StyleSheet, TouchableWithoutFeedback, Animated, Easing} from 'react-native'
+import {useDispatch} from 'react-redux'
+
+import * as Haptics from 'expo-haptics'
 
 import {differenceInHours, differenceInSeconds} from 'date-fns'
 import Color from 'color'
+import MapboxGL from '@react-native-mapbox-gl/maps'
 
 import {eventCategories, defaultCategory, appColours} from '../../../config'
+import updateBuilding from '../../../store/actions/updateBuilding'
 import {hourFactor} from '../hourFactor'
 
 const Styles = StyleSheet.create({
@@ -13,14 +18,16 @@ const Styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     flexDirection: 'row',
-    backgroundColor: appColours.bottomBackground
+    backgroundColor: appColours.bottomBackground,
+    overflow: 'hidden'
   },
   main: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopRightRadius: 12,
-    borderBottomRightRadius: 12
+    borderBottomRightRadius: 12,
+    overflow: 'hidden'
   },
   bar: {
     // position: 'absolute',
@@ -34,7 +41,8 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     left: 6,
-    marginRight: 6
+    marginRight: 6,
+    zIndex: 2
   },
   title: {
     fontSize: 18,
@@ -48,11 +56,20 @@ const Styles = StyleSheet.create({
   }
 })
 
-export default ({style: externalStyle, event, popState, initialPopState, scrollBeingTouched}) => {
+export default ({style: externalStyle, event, buildings, popState, initialPopState, scrollBeingTouched}) => {
+  const dispatch = useDispatch()
+
   const [state, setState] = useState({event})
   const [now, setNow] = useState(new Date())
 
-  const {start, end, category, title, location, code} = state.event
+  const {start, end, category, title, location={}, code} = state.event
+
+  const building = useMemo(() => buildings.find(({buildingCode}={}) => buildingCode === location.buildingCode), [location.buildingCode, buildings.cacheKey])
+  const {coords, address} = building || {}
+
+  useEffect(() => {
+    if(!building && location.buildingCode) updateBuilding(dispatch, {buildingCode: location.buildingCode})
+  }, [building])
 
   useEffect(() => {
     const timer = setTimeout(() => setNow(new Date()), 1000)
@@ -83,8 +100,15 @@ export default ({style: externalStyle, event, popState, initialPopState, scrollB
     marginLeft: applicablePopState.interpolate({inputRange: [0, 1], outputRange: ['0%', '-20%']})
   }
 
+  const animatedExtra = {
+    opacity: applicablePopState.interpolate({inputRange: [0, 1], outputRange: [0, 1]})
+  }
+
   const pop = () => {
+    if(!coords) return
+
     setArePopping(true)
+    setTimeout(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy), 250)
     Animated.timing(popState, {
       toValue: 1,
       duration: 500,
@@ -92,7 +116,11 @@ export default ({style: externalStyle, event, popState, initialPopState, scrollB
     }).start()
   }
 
-  const unpop = () => {
+  // useEffect(pop, [])
+
+  const unpop = ({nativeEvent}={}) => {
+    if(nativeEvent && nativeEvent.touches.length) return // if this is being triggered by direct touch - make sure it's not being stolen
+
     Animated.timing(popState, {
       toValue: 0,
       duration: 500,
@@ -100,25 +128,60 @@ export default ({style: externalStyle, event, popState, initialPopState, scrollB
     }).start(() => setArePopping(false))
   }
 
-  // {"changedTouches": [[Circular]],
-  // "identifier": 1,
-  // "locationX": 123,
-  // "locationY": 34.5,
-  // "pageX": 164.5,
-  // "pageY": 543,
-  // "target": 1685,
-  // "timestamp": 106578224.89930402,
-  // "touches": []}
+
+  const mapExpansion = coords ? (
+    <Animated.View style={[{height: '100%', width: '100%', position: 'absolute', top: 0, left: 0, zIndex: -1}, animatedExtra]}>
+      <MapboxGL.MapView
+        style={[{flex: 1}]}
+
+        styleURL={appColours.mapStyle}
+        logoEnabled={false}
+        attributionEnabled={false}
+
+        pointerEvents="none"
+        scrollEnabled={false}
+        rotateEnabled={false}
+        pitchEnabled={false}
+        zoomEnabled={false}
+      >
+        <MapboxGL.Camera
+          centerCoordinate={coords}
+          zoomLevel={arePopping ? 16 : 10}
+
+          animationDuration={arePopping ? 350 : 0}
+        />
+
+        <MapboxGL.ShapeSource
+          id="buildingMarker"
+          shape={{
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: coords
+              }
+            }]
+          }}
+        >
+          <MapboxGL.CircleLayer id="exampleIconName" style={{circleStrokeWidth: 2, circleStrokeColor: '#fff', circleRadius: 3, circleColor: colour.string()}} />
+        </MapboxGL.ShapeSource>
+      </MapboxGL.MapView>
+    </Animated.View>
+  ) : null
+
 
   return (
-    <TouchableWithoutFeedback delayLongPress={200} onLongPress={pop} onPressOut={({nativeEvent}) => !nativeEvent.touches.length && unpop()}>
+    <TouchableWithoutFeedback delayLongPress={200} onLongPress={pop} onPressOut={unpop}>
       <Animated.View style={[externalStyle, Styles.container, animated]}>
         <View style={[Styles.bar, {backgroundColor: colour, overflow: 'hidden'}]} />
         <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>
           <View style={Styles.textContainer}>
             <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{displayedTitle}</Text>
-            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location}</Text>
+            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
           </View>
+          {mapExpansion}
         </View>
       </Animated.View>
     </TouchableWithoutFeedback>

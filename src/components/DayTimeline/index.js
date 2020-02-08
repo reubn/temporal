@@ -41,10 +41,18 @@ const Styles = StyleSheet.create({
   }
 })
 
+const emptyObject = {}
+
 export default ({scrollBeingTouched}) => {
   const dispatch = useDispatch()
 
-  const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
+  // const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
+  const day = useSelector(({selectedDay}) => selectedDay)
+  const {events=[], timestamp} = useSelector(({days}) => days.find(({day: d}) => isEqual(day, d)) || emptyObject)
+
+  const buildings = useSelector(({buildings}) => buildings)
+
+  const loading = useSelector(({loading}) => loading)
 
   const {current: popState} = useRef(new Animated.Value(0))
   const {current: initialPopState} = useRef(new Animated.Value(0))
@@ -66,7 +74,7 @@ export default ({scrollBeingTouched}) => {
   const elements = periods.map((eventOrFree, i, array) => (
     eventOrFree.free
     ? <FreePeriod key={`free-${i}`} free={eventOrFree}  />
-    : <Period key={eventOrFree.id} event={eventOrFree} initialPopState={initialPopState} popState={popState} scrollBeingTouched={scrollBeingTouched}/>
+    : <Period key={eventOrFree.id} event={eventOrFree} buildings={buildings} initialPopState={initialPopState} popState={popState} scrollBeingTouched={scrollBeingTouched}/>
   ))
 
   const timeline = <>
