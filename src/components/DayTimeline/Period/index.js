@@ -40,8 +40,9 @@ const Styles = StyleSheet.create({
   textContainer: {
     position: 'absolute',
     top: 4,
-    left: 6,
-    marginRight: 6,
+    left: 0,
+    paddingHorizontal: 6,
+    width: '100%',
     zIndex: 2
   },
   title: {
