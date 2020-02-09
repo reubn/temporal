@@ -76,9 +76,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
   const building = useMemo(() => buildings.find(({buildingCode}={}) => buildingCode === location.buildingCode), [location.buildingCode, buildings.cacheKey])
   const {coords, address} = building || {}
 
-  useEffect(() => {
-    if(!building && location.buildingCode) updateBuilding(dispatch, {buildingCode: location.buildingCode})
-  }, [building])
+  useEffect(() => void (!building && location.buildingCode) && updateBuilding(dispatch, {buildingCode: location.buildingCode}), [building])
 
   useEffect(() => {
     const timer = setTimeout(() => requestAnimationFrame(() => setNow(new Date())), 1000)

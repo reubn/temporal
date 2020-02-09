@@ -57,9 +57,7 @@ const DayTimeline = ({scrollBeingTouched}) => {
   const {current: popState} = useRef(new Animated.Value(0))
   const {current: initialPopState} = useRef(new Animated.Value(0))
 
-  useEffect(() => {
-    updateDays(dispatch, {day, timestamp})
-  }, [day])
+  useEffect(() => void updateDays(dispatch, {day, timestamp}), [day])
 
   const periods = useMemo(() => events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
