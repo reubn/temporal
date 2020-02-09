@@ -185,8 +185,8 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
         <View style={[Styles.bar, {backgroundColor: colour, overflow: 'hidden'}]} />
         <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>
           <View style={Styles.textContainer}>
-            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{displayedTitle}</Text>
-            <Text ellipsizeMode="middle" style={[Styles.location, {color: colour.darken(0.2)}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
+            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{displayedTitle}</Text>
+            <Text ellipsizeMode="middle" style={[Styles.location, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
           </View>
           {mapExpansion}
         </View>
