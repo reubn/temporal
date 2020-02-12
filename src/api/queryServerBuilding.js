@@ -28,7 +28,6 @@ export default async ({buildingCode}={}) => {
   return {
     buildingCode,
     address: Address,
-    coords: Geometries.find(({Type}) => Type === 'Point').Coordinates,
-    timestamp: new Date()
+    coords: Geometries.find(({Type}) => Type === 'Point').Coordinates
   }
 }

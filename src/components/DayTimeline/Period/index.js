@@ -74,7 +74,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
   const {start, end, category, title, location={}, code} = state.event
 
-  const building = useMemo(() => buildings.find(({buildingCode}={}) => buildingCode === location.buildingCode), [location.buildingCode, buildings.cacheKey])
+  const building = useMemo(() => buildings.find(({buildingCode}={}) => buildingCode === location.buildingCode), [location.buildingCode, buildings])
   const {coords, address} = building || {}
 
   useEffect(() => void (!building && location.buildingCode && updateBuilding(dispatch, {buildingCode: location.buildingCode})), [building])

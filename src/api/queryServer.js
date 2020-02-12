@@ -59,7 +59,6 @@ export default async ({start=new Date(), end=new Date()}={}) => {
   const days = eachDayOfInterval({start: earliestDayReturned, end: latestDayReturned}).map(day => ({
     day,
     dayString: format(day, 'yyyy-MM-dd'),
-    timestamp: new Date(),
     events: []
   }))
 

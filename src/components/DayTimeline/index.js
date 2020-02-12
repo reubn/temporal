@@ -59,7 +59,7 @@ const DayTimeline = ({scrollBeingTouched}) => {
 
   useEffect(() => void updateDays(dispatch, {day, timestamp}), [day])
 
-  const periods = useMemo(() => events.sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
+  const periods = useMemo(() => [...events].sort(({start: startA}, {start: startB}) => compareAsc(startA, startB)).reduce((array, event) => {
     const {start, end, id} = event
 
     const freeTime = array.length && !isEqual(array[array.length - 1].end, start)

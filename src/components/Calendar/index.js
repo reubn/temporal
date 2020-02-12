@@ -51,7 +51,7 @@ const Calendar = () => {
       [dayString]: ({
         dots: Array(length).fill(isEqual(d, startOfDay(new Date())) ? {color: appColours.background} : {color: appColours.topForeground, selectedDotColor: appColours.background})
       })
-  }), {}), [days.cacheKey])
+  }), {}), [days])
 
   const marks = useMemo(() => Object.keys(dots).reduce((result, key) => {
     result[key] = {...dots[key], ...(key === selectedDayString ? {dots: [], selected: true} : {selected: false})}

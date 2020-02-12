@@ -1,5 +1,4 @@
-export default (() => {
-  const buildings = [
+export default [
     {
       buildingCode: 'O-WH',
       address: `70 Pembroke Place
@@ -10,8 +9,3 @@ United Kingdom`,
       timestamp: new Date()
     }
   ]
-
-  buildings.cacheKey = Math.random()
-
-  return buildings
-})()
