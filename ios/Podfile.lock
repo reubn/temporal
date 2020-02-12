@@ -204,7 +204,7 @@ PODS:
     - React
   - react-native-shake (3.4.0):
     - React
-  - react-native-webview (8.0.4):
+  - react-native-webview (8.0.6):
     - React
   - React-RCTActionSheet (0.61.5):
     - React-Core/RCTActionSheetHeaders (= 0.61.5)
@@ -437,7 +437,7 @@ SPEC CHECKSUMS:
   react-native-mapbox-gl: f94bda32d55284b202d72359ed7d5d43f5223c89
   react-native-safe-area-context: 042dfc9d4db17196841df962ba9497f6e7a5bd02
   react-native-shake: 4ce03b12439f4b9fdf0acd40c5b0f476b8105f9f
-  react-native-webview: 987e8c4a6faf5b9e45cf8e32beb98087953b8109
+  react-native-webview: e11b5d7da61ac3acee13f3ae3184d417f773c5d5
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
   React-RCTBlob: d89293cc0236d9cb0933d85e430b0bbe81ad1d72
