@@ -28,7 +28,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
   const rawEvents = await response.json()
 
   const events = rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc='', locations=[{}]}) => {
-    const {category} = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
+    const category = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
     const startDate = parseISO(start)
 
@@ -37,8 +37,9 @@ export default async ({start=new Date(), end=new Date()}={}) => {
       start: startDate,
       end: parseISO(end),
       id,
-      category,
+      category: category.category,
       code,
+      title: category.title || [...code.split('/')].pop().replace(/[a-zA-Z]+/g, word => ['to', 'and', 'of', 'with', 'in', 'on'].includes(word) ? word : `${[...word].map((l, i) => i ? l : l.toUpperCase()).join('')}`),
       location: locations.length
       ? {
         description: locationdesc.replace(/\<.+?\>/g, '')
@@ -48,7 +49,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
                       .filter(a => a && !a.includes('Floor')).map(a => a.replace(/([a-zA-Z])(\w*)/g, (_, l, rest) => `${l.toUpperCase()}${rest}`).trim()).reverse().join('\n'),
         buildingCode: (locations[0].BuildingCode) || undefined
       }
-      : locationFinder({code, category})
+      : locationFinder({code, category: category.category})
     }
   })
 
