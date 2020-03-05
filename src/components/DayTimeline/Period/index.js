@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useMemo} from 'react'
-import {View, Text, StyleSheet, TouchableWithoutFeedback, Animated, Easing} from 'react-native'
+import {View, Text, StyleSheet, TouchableWithoutFeedback, Animated, Easing, Clipboard} from 'react-native'
 import {useDispatch} from 'react-redux'
 
 import * as Haptics from 'expo-haptics'
@@ -72,7 +72,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
   const [state, setState] = useState({event})
   const [now, setNow] = useState(new Date())
 
-  const {start, end, category, title, location={}, code} = state.event
+  const {start, end, category, title, location={}, code, id} = state.event
 
   const building = useMemo(() => buildings.find(({buildingCode}={}) => buildingCode === location.buildingCode), [location.buildingCode, buildings])
   const {coords, address} = building || {}
@@ -179,7 +179,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
 
   return (
-    <TouchableWithoutFeedback delayLongPress={200} onLongPress={pop} onPressOut={unpop}>
+    <TouchableWithoutFeedback delayLongPress={200} onLongPress={pop} onPressOut={unpop} onPress={() => Clipboard.setString(id)}>
       <Animated.View style={[externalStyle, Styles.container, animated]}>
         <View style={[Styles.bar, {backgroundColor: colour, overflow: 'hidden'}]} />
         <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>

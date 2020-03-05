@@ -4,6 +4,12 @@ import {eventCategories, defaultCategory, locationFinder} from '../config'
 
 import login from './login'
 
+const makeOverrideRequest = async () => {
+  console.log('fetching overrides')
+
+  return response.json()
+}
+
 const makeRequest = async ({start, end}) => {
   console.log('fetching 28days', format(start, 'yyyy-MM-dd'), format(end, 'yyyy-MM-dd'))
 
@@ -18,6 +24,7 @@ const makeRequest = async ({start, end}) => {
 }
 
 export default async ({start=new Date(), end=new Date()}={}) => {
+  const overrides = await makeOverrideRequest()
   let response = await makeRequest({start, end})
 
   if(response.url.includes('account') || !response.ok){
@@ -32,7 +39,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
 
     const startDate = parseISO(start)
 
-    return {
+    const event = {
       day: startOfDay(startDate),
       start: startDate,
       end: parseISO(end),
@@ -51,6 +58,8 @@ export default async ({start=new Date(), end=new Date()}={}) => {
       }
       : locationFinder({code, category: category.category})
     }
+
+    return {...event, ...(overrides[id] || {})}
   })
 
   const daysReturned = events.map(({day}) => day)
