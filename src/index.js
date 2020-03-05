@@ -10,11 +10,14 @@ import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 import store from './store'
 import maps from './maps'
+import notifications from './notifications'
 import App from './App'
 
 import {haveCredentials, clearCredentials} from './store/secure'
 // clearCredentials()
 haveCredentials()
+
+notifications(store)
 
 const showLogoutActionSheet = () => {
   ActionSheetIOS.showActionSheetWithOptions({

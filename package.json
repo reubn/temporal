@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^2.0.0-rc.2",
     "@react-native-community/async-storage-backend-legacy": "next",
+    "@react-native-community/push-notification-ios": "^1.0.6",
     "@react-native-mapbox-gl/maps": "^7.2.0",
     "color": "^3.1.2",
     "date-fns": "^2.9.0",
@@ -33,7 +34,8 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tesseract.js": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "~7.6.0",
