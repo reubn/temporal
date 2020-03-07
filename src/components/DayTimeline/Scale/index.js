@@ -6,9 +6,8 @@ import {hourFactor} from '../hourFactor'
 
 import {useAppColours} from '../../../config'
 
-const createHourPeriod = ({first, hours}) => (_, i) => {
-  const appColours = useAppColours()
-  
+const createHourPeriod = ({first, hours, appColours}) => (_, i) => {
+
   const hourLabel = format(addHours(first.start, i), 'h:mm')
 
   const areWeLastHour = i == hours - 1
@@ -70,6 +69,8 @@ const createHourPeriod = ({first, hours}) => (_, i) => {
 }
 
 const Scale = ({first, last, popState}) => {
+  const appColours = useAppColours()
+
   const hoursDifference = differenceInHours(last.end, first.start)
   const hours = Math.ceil(hoursDifference)
   const containerHeight = hours * hourFactor
@@ -87,7 +88,7 @@ const Scale = ({first, last, popState}) => {
 
   return (
     <Animated.View style={[Styles.container, {height: containerHeight}, animated]}>
-      {Array.from({length: hours}, createHourPeriod({first, hours}))}
+      {Array.from({length: hours}, createHourPeriod({first, hours, appColours}))}
     </Animated.View>
   )
 }
