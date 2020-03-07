@@ -1,5 +1,7 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BVLinearGradient (2.5.6):
+    - React
   - DoubleConversion (1.1.6)
   - EXFileSystem (8.0.0):
     - UMCore
@@ -261,6 +263,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -317,6 +320,8 @@ SPEC REPOS:
     - MapboxMobileEvents
 
 EXTERNAL SOURCES:
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXFileSystem:
@@ -418,6 +423,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXFileSystem: fa8ecad925ad984681910a2273930f7255a0a9b5
   EXFont: 5e3c087bc09461075a070457fa7c9df3c2bf17cf
@@ -465,6 +471,6 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: 7ec3c2da240e767df8257bc487251ae03447d1b0
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 4ce07d36a483843294b52a8493f7ec771640405e
+PODFILE CHECKSUM: 66768fb1f126ee9c83603c8d78e27f75607073e9
 
 COCOAPODS: 1.8.4

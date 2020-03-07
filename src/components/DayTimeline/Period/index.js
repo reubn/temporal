@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableWithoutFeedback, Animated, Easing, Clip
 import {useDispatch} from 'react-redux'
 
 import * as Haptics from 'expo-haptics'
+import LinearGradient from 'react-native-linear-gradient'
 
 import {differenceInHours, differenceInSeconds} from 'date-fns'
 import Color from 'color'
@@ -39,22 +40,22 @@ const Styles = StyleSheet.create({
   },
   textContainer: {
     position: 'absolute',
-    top: 4,
+    top: 1,
     left: 0,
     paddingHorizontal: 6,
     width: '100%',
     zIndex: 2
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '600',
     fontFamily: 'SF-Pro-Rounded-Medium'
   },
   location: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     fontFamily: 'SF-Pro-Rounded-Regular',
-    marginTop: 2
+    marginTop: 4
   },
   extra: {
     height: '100%',
@@ -91,7 +92,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
   const baseHeight = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
   const {colour: colourString, border, title: categoryObjectTitle} = eventCategories.find(({category: cat}) => category === cat) || defaultCategory
 
-  const colour = new Color(colourString)//.desaturate( ? 1 : 0)
+  const colour = new Color(colourString)
 
   const [arePopping, setArePopping] = useState(false)
 
@@ -134,11 +135,12 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
     }).start(() => setArePopping(false))
   }
 
-
   const mapExpansion = coords ? (
     <Animated.View style={[Styles.extra, animatedExtra]}>
+    <LinearGradient colors={[colour.lighten(0.15).fade(0.9).string(), colour.fade(1).string()]} style={[{flex: 1, height: '100%', width: '100%', position: 'absolute'}]}>
+    </LinearGradient>
       <MapboxGL.MapView
-        style={[{flex: 1}]}
+        style={[{flex: 1, zIndex:-1}]}
 
         styleURL={appColours.mapStyle}
         logoEnabled={false}
@@ -184,7 +186,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
         <View style={[Styles.bar, {backgroundColor: colour, overflow: 'hidden'}]} />
         <View style={[Styles.main, {backgroundColor: colour.fade(0.95)}, border ? {borderWidth: 2, borderColor: colour, borderLeftWidth: 0} : {}]}>
           <View style={Styles.textContainer}>
-            <Text numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{title}</Text>
+            <Text adjustsFontSizeToFit numberOfLines={2} ellipsizeMode="middle" style={[Styles.title, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{title}</Text>
             <Text ellipsizeMode="middle" style={[Styles.location, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{location.description}</Text>
           </View>
           {mapExpansion}
