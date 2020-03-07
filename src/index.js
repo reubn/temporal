@@ -7,6 +7,7 @@ import RNShake from 'react-native-shake'
 import * as Font from 'expo-font'
 
 import {SafeAreaProvider} from 'react-native-safe-area-context'
+import {AppearanceProvider} from 'react-native-appearance'
 
 import store from './store'
 import maps from './maps'
@@ -58,9 +59,11 @@ class Wrapper extends Component {
   render() {
     return (
       <SafeAreaProvider>
-        <Provider store={store}>
-          {this.state.ready ? <App /> : null}
-        </Provider>
+        <AppearanceProvider>
+          <Provider store={store}>
+            {this.state.ready ? <App /> : null}
+          </Provider>
+        </AppearanceProvider>
       </SafeAreaProvider>
     )
   }

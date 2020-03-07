@@ -9,65 +9,13 @@ import {differenceInHours, differenceInSeconds} from 'date-fns'
 import Color from 'color'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 
-import {eventCategories, defaultCategory, appColours} from '../../../config'
+import {eventCategories, defaultCategory, useAppColours} from '../../../config'
 import updateBuilding from '../../../store/actions/updateBuilding'
 import {hourFactor} from '../hourFactor'
 
-const Styles = StyleSheet.create({
-  container: {
-    width: '95%',
-    marginTop: 5,
-    marginBottom: 5,
-    flexDirection: 'row',
-    backgroundColor: appColours.bottomBackground,
-    overflow: 'hidden'
-  },
-  main: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopRightRadius: 12,
-    borderBottomRightRadius: 12,
-    overflow: 'hidden'
-  },
-  bar: {
-    // position: 'absolute',
-    left: 0,
-    height: '100%',
-    width: 4,
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4
-  },
-  textContainer: {
-    position: 'absolute',
-    top: 1,
-    left: 0,
-    paddingHorizontal: 6,
-    width: '100%',
-    zIndex: 2
-  },
-  title: {
-    fontSize: 17,
-    fontWeight: '600',
-    fontFamily: 'SF-Pro-Rounded-Medium'
-  },
-  location: {
-    fontSize: 15,
-    fontWeight: '600',
-    fontFamily: 'SF-Pro-Rounded-Regular',
-    marginTop: 4
-  },
-  extra: {
-    height: '100%',
-    width: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: -1
-  }
-})
-
 const Period = ({style: externalStyle, event, buildings, popState, initialPopState, scrollBeingTouched}) => {
+  const appColours = useAppColours()
+
   const dispatch = useDispatch()
 
   const [state, setState] = useState({event})
@@ -85,6 +33,60 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
     return () => clearTimeout(timer)
   }, [now])
+
+  const Styles = StyleSheet.create({
+    container: {
+      width: '95%',
+      marginTop: 5,
+      marginBottom: 5,
+      flexDirection: 'row',
+      backgroundColor: appColours.bottomBackground,
+      overflow: 'hidden'
+    },
+    main: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderTopRightRadius: 12,
+      borderBottomRightRadius: 12,
+      overflow: 'hidden'
+    },
+    bar: {
+      // position: 'absolute',
+      left: 0,
+      height: '100%',
+      width: 4,
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4
+    },
+    textContainer: {
+      position: 'absolute',
+      top: 1,
+      left: 0,
+      paddingHorizontal: 6,
+      width: '100%',
+      zIndex: 2
+    },
+    title: {
+      fontSize: 17,
+      fontWeight: '600',
+      fontFamily: 'SF-Pro-Rounded-Medium'
+    },
+    location: {
+      fontSize: 15,
+      fontWeight: '600',
+      fontFamily: 'SF-Pro-Rounded-Regular',
+      marginTop: 4
+    },
+    extra: {
+      height: '100%',
+      width: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      zIndex: -1
+    }
+  })
 
   const ended = differenceInSeconds(now, end) >= Math.min(-differenceInSeconds(end, start) * 0.25, -15 * 60)
 

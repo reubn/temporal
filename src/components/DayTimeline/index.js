@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux'
 
 import {compareAsc, isEqual} from 'date-fns'
 
-import {appColours} from '../../config'
+import {useAppColours} from '../../config'
 
 import updateDays from '../../store/actions/updateDays'
 
@@ -13,37 +13,11 @@ import Period from './Period'
 import FreePeriod from './FreePeriod'
 import NowLine from './NowLine'
 
-
-const Styles = StyleSheet.create({
-  outerContainer: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    marginTop: 30,
-    marginBottom: 30
-  },
-  eventsContainer: {
-    width: '80%'
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '80%',
-    height: '100%'
-  },
-  emptyText: {
-    marginTop: 16,
-    fontFamily: 'SF-Pro-Rounded-Regular',
-    fontSize: 18,
-    color: appColours.bottomForeground
-  }
-})
-
 const emptyObject = {}
 
 const DayTimeline = ({scrollBeingTouched}) => {
+  const appColours = useAppColours()
+  
   const dispatch = useDispatch()
 
   // const [{events=[], timestamp}, day, loading] = useSelector(({days, selectedDay, loading}) => [days.find(({day}) => isEqual(selectedDay, day))|| {}, selectedDay, loading])
@@ -68,6 +42,33 @@ const DayTimeline = ({scrollBeingTouched}) => {
 
     return [...array, ...(freeTime ? [freeTime, event] : [event])]
   }, []), [events])
+
+  const Styles = StyleSheet.create({
+    outerContainer: {
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      flexDirection: 'row',
+      marginTop: 30,
+      marginBottom: 30
+    },
+    eventsContainer: {
+      width: '80%'
+    },
+    emptyContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '80%',
+      height: '100%'
+    },
+    emptyText: {
+      marginTop: 16,
+      fontFamily: 'SF-Pro-Rounded-Regular',
+      fontSize: 18,
+      color: appColours.bottomForeground
+    }
+  })
 
   const elements = periods.map((eventOrFree, i, array) => (
     eventOrFree.free

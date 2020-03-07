@@ -9,54 +9,14 @@ import DayTimeline from './components/DayTimeline'
 import Calendar from './components/Calendar'
 import Login from './components/Login'
 
-import {appColours} from './config'
+import {useAppColours} from './config'
 
 const DIMENSIONS = Dimensions.get('window')
-
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    backgroundColor: appColours.background
-  },
-  background: {
-    position: 'absolute',
-    zIndex: -2,
-    width: '100%',
-    height: '100%'
-  },
-  hidden: {
-    position: 'absolute',
-    bottom: DIMENSIONS.height * 0.075,
-    width: '100%',
-    left: 0,
-    zIndex: -1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5,
-    opacity: 0.5
-  },
-  hiddenText: {
-    color: appColours.topForeground,
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: 'SF-Pro-Rounded-Medium',
-    textAlign: 'center'
-  }
-})
-
-const html = `<html style="
-  background: linear-gradient(135deg, ${appColours.background}, ${appColours.backgroundAccent});
-  width: 100%;
-  height: 100%;
-">
-  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-</html>`
 
 const AnimatedWebView = Animated.createAnimatedComponent(WebView)
 
 export default () => {
+  const appColours = useAppColours()
   const haveCredentials = useSelector(({credentials}) => credentials)
 
   const [opacity] = useState(new Animated.Value(0))
@@ -67,6 +27,47 @@ export default () => {
       duration: 250
     }).start()
   }
+
+  const Styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      backgroundColor: appColours.background
+    },
+    background: {
+      position: 'absolute',
+      zIndex: -2,
+      width: '100%',
+      height: '100%'
+    },
+    hidden: {
+      position: 'absolute',
+      bottom: DIMENSIONS.height * 0.075,
+      width: '100%',
+      left: 0,
+      zIndex: -1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 5,
+      opacity: 0.5
+    },
+    hiddenText: {
+      color: appColours.topForeground,
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: 'SF-Pro-Rounded-Medium',
+      textAlign: 'center'
+    }
+  })
+
+  const html = `<html style="
+    background: linear-gradient(135deg, ${appColours.background}, ${appColours.backgroundAccent});
+    width: 100%;
+    height: 100%;
+  ">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+  </html>`
 
   const main = (
     <>

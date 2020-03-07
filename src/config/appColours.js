@@ -1,4 +1,5 @@
 export const light = {
+  key: 'light',
   background: 'hsla(190, 100%, 60%, 1)',
   backgroundAccent: 'hsla(205, 100%, 55%, 1)',
 
@@ -21,6 +22,7 @@ export const light = {
 }
 
 export const dark = {
+  key: 'dark',
   background: 'hsla(48, 98%, 50%, 1)',
   backgroundAccent: 'hsla(30, 98%, 48%, 1)',
 

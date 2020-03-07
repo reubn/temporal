@@ -6,27 +6,11 @@ import {differenceInHours, differenceInSeconds, startOfDay, isEqual} from 'date-
 
 import {hourFactor} from '../hourFactor'
 
-import {appColours} from '../../../config'
-
-const Styles = StyleSheet.create({
-  container: {
-    width: '85%',
-    height: 6,
-    position: 'absolute',
-    right: '0%',
-    borderRadius: 2,
-    zIndex: 1,
-    borderWidth: 2,
-    borderColor: appColours.bottomBackground
-  },
-  line: {
-    height: 2,
-    backgroundColor: appColours.bottomForeground,
-    borderRadius: 2
-  }
-})
+import {useAppColours} from '../../../config'
 
 const NowLine = ({first: {start}, last: {end}, popState}) => {
+  const appColours = useAppColours()
+  
   const [now, setNow] = useState(new Date())
 
   useEffect(() => {
@@ -36,6 +20,24 @@ const NowLine = ({first: {start}, last: {end}, popState}) => {
   }, [now])
 
   if(!isEqual(startOfDay(now), startOfDay(start))) return null
+
+  const Styles = StyleSheet.create({
+    container: {
+      width: '85%',
+      height: 6,
+      position: 'absolute',
+      right: '0%',
+      borderRadius: 2,
+      zIndex: 1,
+      borderWidth: 2,
+      borderColor: appColours.bottomBackground
+    },
+    line: {
+      height: 2,
+      backgroundColor: appColours.bottomForeground,
+      borderRadius: 2
+    }
+  })
 
   const top = Math.max(0, Math.min(hourFactor * (differenceInSeconds(now, start) / 60 / 60), (differenceInHours(end, start) * hourFactor)))
 

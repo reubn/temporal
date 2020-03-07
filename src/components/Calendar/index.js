@@ -12,27 +12,9 @@ import {format, startOfDay, isEqual, addDays} from 'date-fns'
 
 import selectDay from '../../store/actions/selectDay'
 
-import {appColours} from '../../config'
+import {useAppColours} from '../../config'
 
 const DIMENSIONS = Dimensions.get('window')
-
-const Styles = StyleSheet.create({
-  outerContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: DIMENSIONS.height / 2,
-    overflow: 'visible'
-  },
-  calendarHeader: {
-    fontSize: 20,
-    fontFamily: 'SF-Pro-Rounded-Medium',
-    color: appColours.topForeground,
-    marginVertical: 5,
-    textAlign: 'center'
-  }
-})
 
 const Calendar = () => {
   const dispatch = useDispatch()
@@ -45,6 +27,26 @@ const Calendar = () => {
   const [compactLayout, setCompactLayout] = useState(false)
 
   const insets = useSafeArea()
+
+  const appColours = useAppColours()
+
+  const Styles = StyleSheet.create({
+    outerContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: DIMENSIONS.height / 2,
+      overflow: 'visible'
+    },
+    calendarHeader: {
+      fontSize: 20,
+      fontFamily: 'SF-Pro-Rounded-Medium',
+      color: appColours.topForeground,
+      marginVertical: 5,
+      textAlign: 'center'
+    }
+  })
 
   const dots = useMemo(() => days.reduce((object, {day: d, dayString, events: {length}}) => ({
       ...object,
@@ -69,7 +71,7 @@ const Calendar = () => {
           <Text style={[Styles.calendarHeader]}>{calendarMonth}</Text>
         </TouchableOpacity>
         <CalendarList
-          key={compactLayout ? 'c' : 'n'}
+          key={`${appColours.key} ${compactLayout ? 'c' : 'n'}`}
           style={{paddingBottom: 38 / 2}}
           current={day}
           markedDates={marks}

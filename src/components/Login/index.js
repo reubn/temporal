@@ -6,56 +6,11 @@ import {useSafeArea} from 'react-native-safe-area-context'
 import login from '../../api/login'
 import {setCredentials} from '../../store/secure'
 
-import {appColours} from '../../config'
-
-const Styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: 'transparent',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center'
-  },
-  form: {
-    width: '80%',
-    marginLeft: '10%'
-  },
-  label: {
-    color: appColours.topForegroundSubtleA,
-    marginTop: 20,
-    fontSize: 14,
-    fontFamily: 'SF-Pro-Rounded-Medium',
-    letterSpacing: 1.5
-  },
-  input: {
-    fontFamily: 'SF-Pro-Rounded-Medium',
-    width: '100%',
-    height: 50,
-    fontSize: 18,
-    borderBottomColor: appColours.topForegroundSubtleA,
-    borderBottomWidth: 1,
-    color: appColours.topForegroundSubtleA,
-    letterSpacing: 1.1
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: appColours.topForeground,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    marginTop: 20
-  },
-  buttonText: {
-    fontFamily: 'SF-Pro-Rounded-Medium',
-    color: appColours.background,
-    fontSize: 18,
-  }
-})
+import {useAppColours} from '../../config'
 
 export default () => {
+  const appColours = useAppColours()
+  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -77,6 +32,53 @@ export default () => {
 
     dispatch({type: 'LOADING_STOP'})
   }
+
+  const Styles = StyleSheet.create({
+    container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      backgroundColor: 'transparent',
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center'
+    },
+    form: {
+      width: '80%',
+      marginLeft: '10%'
+    },
+    label: {
+      color: appColours.topForegroundSubtleA,
+      marginTop: 20,
+      fontSize: 14,
+      fontFamily: 'SF-Pro-Rounded-Medium',
+      letterSpacing: 1.5
+    },
+    input: {
+      fontFamily: 'SF-Pro-Rounded-Medium',
+      width: '100%',
+      height: 50,
+      fontSize: 18,
+      borderBottomColor: appColours.topForegroundSubtleA,
+      borderBottomWidth: 1,
+      color: appColours.topForegroundSubtleA,
+      letterSpacing: 1.1
+    },
+    button: {
+      width: '100%',
+      height: 50,
+      backgroundColor: appColours.topForeground,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      marginTop: 20
+    },
+    buttonText: {
+      fontFamily: 'SF-Pro-Rounded-Medium',
+      color: appColours.background,
+      fontSize: 18,
+    }
+  })
 
   return (
     <View style={[Styles.container, {paddingTop: insets.top}]} onStartShouldSetResponder={() => Keyboard.dismiss()}>

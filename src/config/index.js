@@ -1,10 +1,24 @@
-import {Appearance} from 'react-native-appearance'
+import React from 'react'
+import {Appearance, useColorScheme} from 'react-native-appearance'
 
 import {dark, light} from './appColours'
 
 export {mapboxToken} from './secrets'
 
 export const appColours = {dark, light}[Appearance.getColorScheme()] || light
+export const useAppColours = () => {
+  const mode = useColorScheme()
+
+  return {dark, light}[mode] || light
+}
+
+export const withUseAppColours = Component => {
+  return props => {
+    const appColours = useAppColours()
+
+    return <Component {...props} appColours={appColours} />
+  }
+}
 
 export const eventCategories = [
   {
