@@ -34,7 +34,7 @@ export default async ({start=new Date(), end=new Date()}={}) => {
 
   const rawEvents = await response.json()
 
-  const events = rawEvents.map(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc='', locations=[{}]}) => {
+  const events = rawEvents.flatMap(({start, end, activitydesc: code='', activityid: id, activitytype:type='', locationdesc='', locations=[{}]}) => {
     const category = eventCategories.sort(({type: a}, {type: b}) => a && b ? 0 : a && !b ? -1 : 1).reduce((bestMatch, category) => (category.hasOwnProperty('searchString') && (code.includes(category.searchString)) || (category.hasOwnProperty('type') && type === category.type)) ? category : bestMatch, defaultCategory)
 
     const startDate = parseISO(start)
@@ -59,7 +59,8 @@ export default async ({start=new Date(), end=new Date()}={}) => {
       : locationFinder({code, category: category.category})
     }
 
-    return {...event, ...(overrides[id] || {})}
+    const overridesApplied = {...event, ...(overrides[id] || {})}
+    return overridesApplied.cancelled ? [] : [overridesApplied]
   })
 
   const daysReturned = events.map(({day}) => day)
