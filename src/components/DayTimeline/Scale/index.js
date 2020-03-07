@@ -12,7 +12,7 @@ const Styles = StyleSheet.create({
   },
   hourPeriod: {
     overflow: 'visible',
-    height: 100
+    height: hourFactor
   },
   hourLabel: {
     color: appColours.bottomForeground,
