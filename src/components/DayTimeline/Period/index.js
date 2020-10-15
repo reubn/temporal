@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux'
 import * as Haptics from 'expo-haptics'
 import LinearGradient from 'react-native-linear-gradient'
 
-import {differenceInHours, differenceInSeconds} from 'date-fns'
+import {differenceInMinutes, differenceInSeconds} from 'date-fns'
 import Color from 'color'
 import MapboxGL from '@react-native-mapbox-gl/maps'
 
@@ -14,6 +14,7 @@ import updateBuilding from '../../../store/actions/updateBuilding'
 import {hourFactor} from '../hourFactor'
 
 const Period = ({style: externalStyle, event, buildings, popState, initialPopState, scrollBeingTouched}) => {
+  // console.log(JSON.stringify(event, null, 2))
   const appColours = useAppColours()
 
   const dispatch = useDispatch()
@@ -90,7 +91,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
 
   const ended = differenceInSeconds(now, end) >= Math.min(-differenceInSeconds(end, start) * 0.25, -15 * 60)
 
-  const length = differenceInHours(end, start)
+  const length = differenceInMinutes(end, start) / 60
   const baseHeight = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
   const {colour: colourString, border, title: categoryObjectTitle} = eventCategories.find(({category: cat}) => category === cat) || defaultCategory
 
@@ -181,6 +182,7 @@ const Period = ({style: externalStyle, event, buildings, popState, initialPopSta
     </Animated.View>
   ) : null
 
+  // return <Text ellipsizeMode="middle" style={[Styles.location, {color: colour}, ended ? {textDecorationLine: 'line-through'} : {}]}>{event.title}</Text>
 
   return (
     <TouchableWithoutFeedback delayLongPress={200} onLongPress={pop} onPressOut={unpop} onPress={() => Clipboard.setString(id)}>

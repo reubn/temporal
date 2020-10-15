@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {View, StyleSheet, Animated} from 'react-native'
 import {WebView} from 'react-native-webview'
 
-import {differenceInHours} from 'date-fns'
+import {differenceInMinutes} from 'date-fns'
 
 import {hourFactor} from '../hourFactor'
 
@@ -12,7 +12,7 @@ const AnimatedWebView = Animated.createAnimatedComponent(WebView)
 
 const FreePeriod = ({style: externalStyle, free}) => {
   const appColours = useAppColours()
-  
+
   const [opacity] = useState(new Animated.Value(0))
 
   const show = () => {
@@ -47,7 +47,7 @@ const FreePeriod = ({style: externalStyle, free}) => {
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
   </html>`
 
-  const length = differenceInHours(end, start)
+  const length = differenceInMinutes(end, start) / 60
   const height = (length * hourFactor) - (Styles.container.marginTop + Styles.container.marginBottom)
 
   return (
