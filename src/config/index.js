@@ -24,11 +24,11 @@ export const eventCategories = [
   {
     searchString: 'Lecture',
     category: 'lecture',
-    title: 'Lecture',
+    // title: 'Lecture',
     colour: 'hsla(199, 100%, 65%, 1)'
   },
   {
-    searchString: 'Lecture (Review)',
+    searchString: 'review',
     category: 'lecture-review',
     title: 'End of Block Review',
     colour: 'hsla(210, 100%, 65%, 1)'
@@ -50,15 +50,26 @@ export const eventCategories = [
     category: 'psm',
     title: 'Psychology & Sociology',
     colour: 'hsla(42, 100%, 60%, 1)'
+  },{
+    searchString: 'Good Doctor',
+    category: 'good',
+    title: 'The Good Doctor',
+    colour: 'hsla(42, 100%, 60%, 1)'
   },
   {
     searchString: 'HARC',
     category: 'harc',
     title: 'Human Anatomy Resource Centre',
-    colour: 'hsla(30, 100%, 52%, 1)'
+    colour: 'hsla(35, 100%, 55%, 1)'
   },
   {
-    searchString: 'CBL(small)',
+    searchString: 'Research & Scholarship',
+    category: 'rs',
+    title: 'Research & Scholarship',
+    colour: 'hsla(330, 100%, 52%, 1)'
+  },
+  {
+    searchString: ['CBL(small)', 'Case Based Learning - student led'],
     category: 'cbl-s',
     title: 'Small CBL',
     colour: 'hsla(320, 100%, 63%, 1)'
@@ -76,9 +87,9 @@ export const eventCategories = [
     colour: 'hsla(55, 100%, 60%, 1)'
   },
   {
-    searchString: 'EoB',
+    searchString: ['EoB', 'End of Block'],
     category: 'test',
-    title: 'End of Block Test',
+    title: 'End of Block',
     border: true,
     colour: 'hsla(140, 80%, 64%, 1)'
   },
@@ -93,6 +104,12 @@ export const eventCategories = [
     searchString: 'Prof Plenary',
     category: 'pel',
     title: 'Profesionalism & Ethics',
+    colour: 'hsla(281, 93%, 64%, 1)'
+  },
+  {
+    searchString: 'Day to Day Prof',
+    category: 'pel',
+    title: 'Day to Day Profesionalism',
     colour: 'hsla(281, 93%, 64%, 1)'
   }
 ]

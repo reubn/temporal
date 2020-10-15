@@ -338,6 +338,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = temporal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				OTHER_LDFLAGS = (
@@ -363,6 +364,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = temporal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				OTHER_LDFLAGS = (

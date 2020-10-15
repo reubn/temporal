@@ -52,6 +52,12 @@ extern NSString * const MMEEventKeyMinZoomLevel;
 extern NSString * const MMEEventKeyEvent;
 extern NSString * const MMEEventKeyCreated;
 extern NSString * const MMEEventKeyStyleURL;
+extern NSString * const MMEEventKeySpeed;
+extern NSString * const MMEEventKeyCourse;
+extern NSString * const MMEEventKeySpeedAccuracy;
+extern NSString * const MMEEventKeyCourseAccuracy;
+extern NSString * const MMEEventKeyVerticalAccuracy;
+extern NSString * const MMEEventKeyFloor;
 extern NSString * const MMEEventKeyVendorId;
 extern NSString * const MMEEventKeyModel;
 extern NSString * const MMEEventKeyDevice;
@@ -182,9 +188,6 @@ extern NSString * const MMEErrorDescriptionKey MME_DEPRECATED_MSG("Use NSLocaliz
 extern NSString * const MMEEventKeyVendorID MME_DEPRECATED_MSG("Use MMEEventKeyVendorId");
 extern NSString * const MMEEventKeyInstallationID MME_DEPRECATED_MSG("Use MMEEventKeyInstallationId");
 extern NSString * const MMEEventKeyAppID MME_DEPRECATED_MSG("Use MMEEventKeyInstallationId");
-
-extern NSString * const MMELoggerHTML MME_DEPRECATED;
-extern NSString * const MMELoggerShareableHTML MME_DEPRECATED;
 
 extern NSString * const MMEEventKeyGestureId MME_DEPRECATED;
 extern NSString * const MMEEventKeyGestureID MME_DEPRECATED;
