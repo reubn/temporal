@@ -57,6 +57,13 @@ export const eventCategories = [
     colour: 'hsla(42, 100%, 60%, 1)'
   },
   {
+    searchString: 'HARC Drop In',
+    category: 'harc',
+    title: 'HARC Drop In',
+    colour: 'hsla(35, 100%, 55%, 1)',
+    remove: true
+  },
+  {
     searchString: 'HARC',
     category: 'harc',
     title: 'Human Anatomy Resource Centre',
